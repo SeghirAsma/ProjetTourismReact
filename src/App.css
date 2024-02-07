@@ -2,6 +2,47 @@
   text-align: center;
 }
 
+.bouton-contenu.bouton-rond{
+  direction: rtl;
+  float: right;
+  border-radius: 30%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px; /* Ajoutez de l'espace en haut des boutons */
+  float: right;
+  margin-top: 2%;
+  margin-right: 2%;
+}
+
+.button-container .submit-button {
+  margin-right: 8px; /* Ajoutez une marge à droite pour séparer les boutons */
+}
+
+.button-container .cancel-button {
+  margin-left: 8px; /* Ajoutez une marge à gauche pour séparer les boutons */
+}
+
+.snackbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 16px;
+  background-color: rgb(34, 200, 34); /* ajustez la couleur selon votre besoin */
+  color: white;
+}
+
+/* App.css */
+
+
+/* Ajoutez ces styles à votre fichier CSS global ou à l'endroit approprié */
+
+
+/* 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +76,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
