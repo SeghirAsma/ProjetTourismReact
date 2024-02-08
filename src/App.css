@@ -5,7 +5,10 @@
 .bouton-contenu.bouton-rond{
   direction: rtl;
   float: right;
-  border-radius: 30%;
+ /* border-radius: 30%; */
+ margin-top: 2%;
+ background-color: #0a396ca3;
+ margin-right: 2%;
 }
 
 .button-container {
@@ -34,6 +37,17 @@
   padding: 16px;
   background-color: rgb(34, 200, 34); /* ajustez la couleur selon votre besoin */
   color: white;
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: #4a6481a3; /* Couleur de fond de la modalité, ajustez selon vos préférences  878686a3 */
+  padding: 20px; /* Espace intérieur pour un meilleur aspect */
+  border-radius: 8px; /* Coins arrondis pour un aspect plus esthétique */
 }
 
 /* App.css */
