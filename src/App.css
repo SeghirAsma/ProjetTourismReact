@@ -2,13 +2,16 @@
   text-align: center;
 }
 
+/* Contenu.js*/
+
 .bouton-contenu.bouton-rond{
   direction: rtl;
   float: right;
  /* border-radius: 30%; */
  margin-top: 2%;
- background-color: #0a396ca3;
+ background-color: #033568;  /*0a396ca3    */ 
  margin-right: 2%;
+ 
 }
 
 .button-container {
