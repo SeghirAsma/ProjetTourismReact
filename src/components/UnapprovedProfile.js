@@ -17,7 +17,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: '#f7a000',
+    backgroundColor: '#033568',
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -49,13 +49,13 @@ function UnapprovedProfile() {
       const handleApproveClick = async (userId) => {
         
         try {
-          const storedToken = localStorage.getItem('token');
+         const storedToken = localStorage.getItem('token');
 
           setLoading(true);
           await axios.put(`http://localhost:8080/api/users/approve/${userId}`, {}, {
             headers: {
               Authorization: `Bearer ${storedToken}`,
-            },
+            }, 
           });
 
           
@@ -72,13 +72,12 @@ function UnapprovedProfile() {
           setLoading(false);
         }};
 
+
          // disapprove user
 const handleUnapproveClick = async (id) => {
     try {
-      // Retrieve the token from localStorage
       const storedToken = localStorage.getItem('token');
       setLoading(true);
-      // Correct the headers structure
       await axios.put(`http://localhost:8080/api/users/archive/${id}`, {}, {
         headers: {
           Authorization: `Bearer ${storedToken}`,
@@ -86,7 +85,6 @@ const handleUnapproveClick = async (id) => {
       });
       
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
-  
       setDeleteSuccessAlert(true);
       setTimeout(() => {
         setDeleteSuccessAlert(false);
@@ -98,17 +96,15 @@ const handleUnapproveClick = async (id) => {
     }
   };
 
-        // get all uesr unapproved
+        // get all uesr 
         useEffect(() => {
           const getAllUsers = async () => {
             try {
-              // Retrieve the token from localStorage
               const storedToken = localStorage.getItem('token');
-        
               const response = await axios.get('http://localhost:8080/api/users/all', {
-                headers: {
+               headers: {
                   Authorization: `Bearer ${storedToken}`,
-                },
+                }, 
               });
         
               setUsers(response.data);
@@ -145,33 +141,22 @@ const handleUnapproveClick = async (id) => {
                   <StyledTableCell>{user.email}</StyledTableCell>
                   <StyledTableCell>{user.role}</StyledTableCell>
                   <StyledTableCell  style={{ textAlign: 'center'}}>
-                                        <div 
-                                            style={{
-                                                display: 'inline-block',
-                                                padding: '5px 10px',
-                                                borderRadius: '5px',
-                                                color: '#fff',
-                                                fontWeight: 'bold',
-                                                backgroundColor: user.approved ? '#bfe283' : user.deleted ? '#ee6b6b' : '#fcb557',
-                                            }}
-                                        >
-                                            {user.approved ? 'Approved' : user.deleted ? 'Archived' : 'Pending Approval'}
-                                        </div>
+                        <div  style={{ display: 'inline-block', padding: '5px 10px', borderRadius: '5px',
+                                    color: '#fff', fontWeight: 'bold',
+                                      backgroundColor: user.approved ? '#bfe283' : user.deleted ? '#ee6b6b' : '#fcb557',
+                                    }} > 
+                          {user.approved ? 'Approved' : user.deleted ? 'Archived' : 'Pending Approval'}
+                       </div>
                  </StyledTableCell>
                  <StyledTableCell style={{ textAlign: 'center'}}>
     {user.deleted? (
-        // Afficher l'icône X pour l'état "deleted"
-        
-        <ErrorIcon style={{ color: 'red' }} />
-    
+        <ErrorIcon style={{ color: 'rgb(220, 0, 0)' }} />
     ) : (
-        // Si l'utilisateur n'est pas approuvé, afficher le bouton Approve
         !user.approved ? (
             <div>
             <Button 
                 variant="contained" 
-                color="success" 
-                style={{ textAlign: 'center', marginRight: '10px' }}
+                style={{ textAlign: 'center', marginRight: '10px' , backgroundColor:'#4CAF50'}}
                 onClick={() => handleApproveClick(user.id)}
             >
                 Approve
@@ -186,20 +171,15 @@ const handleUnapproveClick = async (id) => {
          </Button>
          </div>
         ) : (
-            // Si l'utilisateur est approuvé, afficher l'icône de coche verte
-            <CheckCircleIcon style={{ color: 'green' }} />
+            <CheckCircleIcon style={{ color: '#4CAF50' }} />
         )
     )}
-</StyledTableCell>
-
-      
-
-
-                </StyledTableRow>
+              </StyledTableCell>
+         </StyledTableRow>
               ))}
-            </TableBody>
-        </Table>
-      </TableContainer>
+      </TableBody>
+     </Table>
+  </TableContainer>
       {successAlert && (
           <Alert
             severity="success"

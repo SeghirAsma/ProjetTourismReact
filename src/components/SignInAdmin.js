@@ -13,7 +13,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom'; // Import useHistory from react-router-dom
+import { useNavigate } from 'react-router-dom'; 
 
 
 function Copyright(props) {
@@ -29,14 +29,13 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function SignInAdmin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Access the history object for navigation
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,19 +49,15 @@ export default function SignInAdmin() {
     const accessToken = response.data.token;
 
     localStorage.setItem('token', accessToken);
-      // Handle the authentication success (e.g., store tokens, redirect)
       console.log('Authentication Successful', response.data);
-
       navigate('/verifyaccount');
 
     } catch (error) {
-      // Handle authentication failure (e.g., show error message)
       console.error('Authentication Failed', error);
     }
   };
 
-  // ... rest of the code
-  
+
 
   return (
     <ThemeProvider theme={defaultTheme}>

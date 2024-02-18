@@ -5,8 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Ajoutez l'import pour l'icône de vérification
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'; 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -16,6 +15,8 @@ import VerifyAccount from "./VerifyAccount";
 import UnapprovedProfile from "./UnapprovedProfile";
 import About from "./About";
 import { useNavigate } from 'react-router-dom';
+import VerifyContent from "./VerifyContent";
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 import { Link,  Route, Routes } from "react-router-dom";
 
@@ -27,8 +28,8 @@ import {
 
     /* les constantes, les themes, les fct pour styles */ 
 const drawerWidth = 240;
-const iconsArray = [DashboardIcon, CheckCircleIcon, AccountCircle, SettingsIcon];
-const colorsArray = ['#2196F3', '#4CAF50', '#FFC107', '#FF5722']; 
+const iconsArray = [DashboardIcon, HowToRegIcon, AccountCircle,CheckCircleIcon];
+const colorsArray = ['#2196F3', '#FF5722', '#FFC107','#4CAF50']; 
 
 //search style
 const Search = styled('div')(({ theme }) => ({
@@ -136,16 +137,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         ...openedMixin(theme),
         '& .MuiDrawer-paper': {
           ...openedMixin(theme),
-          backgroundColor: '#001F3F', // Couleur bleu marine
-          color: 'white', // Couleur du texte
+          backgroundColor: '#001F3F', 
+          color: 'white', 
         },
       }),
       ...(!open && {
         ...closedMixin(theme),
         '& .MuiDrawer-paper': {
           ...closedMixin(theme),
-          backgroundColor: '#001F3F', // Couleur bleu marine
-          color: 'white', // Couleur du texte
+          backgroundColor: '#001F3F', 
+          color: 'white', 
         },
       }),
     }),
@@ -161,17 +162,14 @@ function Sidebar() {
       { path: '/dashboard', label: 'Dashboard', component: About },
       { path: '/verifyAccount', label: 'Verify Account', component: VerifyAccount },
       {path: '/UnapprovedProfile', label: 'Accounts', component: UnapprovedProfile},
-      {path: '/ProfileSettingsAdmin', label: 'Settings', component: UnapprovedProfile}
-      // Add other routes similarly
+      {path: '/VerifyContent', label: 'Verify Content', component: VerifyContent}
+      
     ];
 
     const navigate = useNavigate();
 
     const handleLogoutClick = () => {
-        // Ajouter ici toute logique de déconnexion si nécessaire
-
-        // Utiliser la fonction navigate pour rediriger vers la page de connexion (signin)
-        navigate('/SignInAdmin');
+        navigate('/');
     };
 
 
@@ -281,7 +279,7 @@ function Sidebar() {
                     minHeight: 48,
                     justifyContent: open ? 'initial' : 'center',
                     px: 2.5,
-                    color: 'white', // Couleur du texte
+                    color: 'white', 
 
                   }}
                 >
@@ -303,7 +301,7 @@ function Sidebar() {
           </List>
           <Divider sx={{ backgroundColor: 'white' }}/>
           <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
+            {['Profile', 'Settings', 'Spam'].map((text, index) => (
               <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                 <ListItemButton
                   sx={{
@@ -321,7 +319,7 @@ function Sidebar() {
 
                     }}
                   >
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    {index % 2 === 0 ? <InboxIcon /> : <SettingsIcon />}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>

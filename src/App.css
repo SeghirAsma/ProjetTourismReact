@@ -54,6 +54,15 @@
 }
 
 /* App.css */
+.video-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Ajoutez d'autres styles si nécessaire */
+
+/* App.css */
 
 
 /* Ajoutez ces styles à votre fichier CSS global ou à l'endroit approprié */

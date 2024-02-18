@@ -15,7 +15,7 @@ import { Button, Alert } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: '#f7a000',
+    backgroundColor: '#033568',
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -72,12 +72,10 @@ function VerifyAccount() {
 
        
    // disapprove user
-const handleUnapproveClick = async (id) => {
+  const handleUnapproveClick = async (id) => {
   try {
-    // Retrieve the token from localStorage
     const storedToken = localStorage.getItem('token');
     
-    // Correct the headers structure
     await axios.put(`http://localhost:8080/api/users/archive/${id}`, {}, {
       headers: {
         Authorization: `Bearer ${storedToken}`,
@@ -99,18 +97,16 @@ const handleUnapproveClick = async (id) => {
 
 
         // get all uesr unapproved
-        useEffect(() => {
-          const getAllUsers = async () => {
+   useEffect(() => {
+    const getAllUsers = async () => {
             try {
-              // Retrieve the token from localStorage
-              const storedToken = localStorage.getItem('token');
-        
-              const response = await axios.get('http://localhost:8080/api/users/all', {
-                headers: {
-                  Authorization: `Bearer ${storedToken}`,
+      const storedToken = localStorage.getItem('token');
+       const response = await axios.get('http://localhost:8080/api/users/all', {
+         headers: {
+         Authorization: `Bearer ${storedToken}`,
                 },
               });
-        // Filter out archived users
+        // Filter out archived and approved users
         const filteredUsers = response.data.filter((user => !user.deleted && !user.approved) );
               setUsers(filteredUsers);
             } catch (error) {
@@ -146,8 +142,8 @@ const handleUnapproveClick = async (id) => {
                   <StyledTableCell>{user.role}</StyledTableCell>
                   <StyledTableCell style={{ textAlign: 'center'}}>
                     <Button variant="contained" 
-                    color="success" 
-                    style={{ textAlign: 'center', marginRight: '10px' }}
+                    //color="success" 
+                    style={{ textAlign: 'center', marginRight: '10px', backgroundColor:'#4CAF50' }}
                     onClick={() => handleApproveClick(user.id)}> Approved</Button>
                     <Button variant="contained" 
                     color="error"
