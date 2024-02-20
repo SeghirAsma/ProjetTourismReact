@@ -18,7 +18,7 @@ function App() {
     <Route path="/ProfileSettingsAdmin" exact Component={ProfileSettingsAdmin}></Route>
     <Route path="/" exact Component={SignInAdmin}></Route>
     <Route path="/UnapprovedProfile" exact Component={UnapprovedProfile}></Route>
-    <Route path="/VerifyContent" exact Component={VerifyContent}></Route>
+    <Route path="/VerifyContent/*" exact Component={VerifyContent}></Route>
 
 
     </Routes>

@@ -6,7 +6,7 @@ import ReactPlayer from 'react-player'
 
 const VideoCard = ({ title, description, videoContenuUrl }) => {
   const filename = videoContenuUrl.split('/').pop();
-  const videoUrl=`http://localhost:8080/api/contenus/videos/${encodeURIComponent(filename)}`
+  const videoUrl=`http://localhost:8099/api/contenus/videos/${encodeURIComponent(filename)}`
   return (
     <Card style={{ width: '40%', height: 'auto', marginBottom: 16}}>
       <CardContent >

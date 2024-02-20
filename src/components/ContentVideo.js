@@ -9,16 +9,23 @@ const FormComponent = () => {
   const [videos, setVideos] = useState([]);
 
 
+ 
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/contenus/all`);
+        const storedToken = localStorage.getItem('token');
+        const response = await axios.get(`http://localhost:8099/api/contenus/unapproved`, {
+          headers: {
+          Authorization: `Bearer ${storedToken}`,
+                 },
+               });
         setVideos(response.data);
         console.log('Réponse du serveur:', response);
       console.log('Vidéos récupérées:', response.data);
       } catch (error) {
         console.error('Erreur lors du chargement des vidéos', error);
       }
+     
     };
 
     fetchVideos();
@@ -32,9 +39,11 @@ const FormComponent = () => {
           {videos.map((video, index) => (
             <Grid item xs={12} sm={4} key={index}>
               <VideoCardContent
+                 username={video.userEntity ? video.userEntity.firstName : ''} // Access the username
                 title={video.titleContenu}
                 description={video.descriptionContenu}
                 videoContenuUrl={video.videoContenuUrl}
+                idContenu={video.idContenu} // 
               />
             </Grid>
           ))}

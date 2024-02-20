@@ -45,17 +45,15 @@ function VerifyAccount() {
      
 // approve user
       const handleApproveClick = async (userId) => {
-        
         try {
           const storedToken = localStorage.getItem('token');
 
           setLoading(true);
-          await axios.put(`http://localhost:8080/api/users/approve/${userId}`, {}, {
+          await axios.put(`http://localhost:8099/api/users/approve/${userId}`, {}, {
             headers: {
               Authorization: `Bearer ${storedToken}`,
             },
           });
-
           
           setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
           setSuccessAlert(true);
@@ -76,7 +74,7 @@ function VerifyAccount() {
   try {
     const storedToken = localStorage.getItem('token');
     
-    await axios.put(`http://localhost:8080/api/users/archive/${id}`, {}, {
+    await axios.put(`http://localhost:8099/api/users/archive/${id}`, {}, {
       headers: {
         Authorization: `Bearer ${storedToken}`,
       },
@@ -101,7 +99,7 @@ function VerifyAccount() {
     const getAllUsers = async () => {
             try {
       const storedToken = localStorage.getItem('token');
-       const response = await axios.get('http://localhost:8080/api/users/all', {
+       const response = await axios.get('http://localhost:8099/api/users/all', {
          headers: {
          Authorization: `Bearer ${storedToken}`,
                 },

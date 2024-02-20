@@ -21,7 +21,7 @@ const FormComponent = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/contenus/all`);
+        const response = await axios.get(`http://localhost:8099/api/contenus/all`);
         setVideos(response.data);
         console.log('Réponse du serveur:', response);
       console.log('Vidéos récupérées:', response.data);
@@ -50,7 +50,7 @@ const handleSubmit = async (event) => {
     formData.append('videoContenuUrl', videoFile);
 
     try {
-      const response = await axios.post('http://localhost:8080/api/contenus/add', formData,
+      const response = await axios.post('http://localhost:8099/api/contenus/add', formData,
        {
         headers: {
           'Content-Type': 'multipart/form-data',

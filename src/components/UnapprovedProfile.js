@@ -52,7 +52,7 @@ function UnapprovedProfile() {
          const storedToken = localStorage.getItem('token');
 
           setLoading(true);
-          await axios.put(`http://localhost:8080/api/users/approve/${userId}`, {}, {
+          await axios.put(`http://localhost:8099/api/users/approve/${userId}`, {}, {
             headers: {
               Authorization: `Bearer ${storedToken}`,
             }, 
@@ -78,7 +78,7 @@ const handleUnapproveClick = async (id) => {
     try {
       const storedToken = localStorage.getItem('token');
       setLoading(true);
-      await axios.put(`http://localhost:8080/api/users/archive/${id}`, {}, {
+      await axios.put(`http://localhost:8099/api/users/archive/${id}`, {}, {
         headers: {
           Authorization: `Bearer ${storedToken}`,
         },
@@ -101,7 +101,7 @@ const handleUnapproveClick = async (id) => {
           const getAllUsers = async () => {
             try {
               const storedToken = localStorage.getItem('token');
-              const response = await axios.get('http://localhost:8080/api/users/all', {
+              const response = await axios.get('http://localhost:8099/api/users/all', {
                headers: {
                   Authorization: `Bearer ${storedToken}`,
                 }, 
@@ -180,6 +180,7 @@ const handleUnapproveClick = async (id) => {
       </TableBody>
      </Table>
   </TableContainer>
+  
       {successAlert && (
           <Alert
             severity="success"
