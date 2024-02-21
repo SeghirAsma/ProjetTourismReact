@@ -14,12 +14,16 @@ const FormComponent = () => {
     const fetchVideos = async () => {
       try {
         const storedToken = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:8099/api/contenus/unapproved`, {
+        const response = await axios.get(`http://localhost:8099/api/contenus/all`, {
           headers: {
           Authorization: `Bearer ${storedToken}`,
                  },
                });
-        setVideos(response.data);
+               const filteredContenus = response.data.filter((contenu => !contenu.deleted && !contenu.approved) );
+
+        // setVideos(response.data);
+        setVideos(filteredContenus);
+
         console.log('Réponse du serveur:', response);
       console.log('Vidéos récupérées:', response.data);
       } catch (error) {

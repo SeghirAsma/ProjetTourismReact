@@ -13,6 +13,8 @@ import axios from 'axios';
 import { Button, Alert } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
+import TablePagination from '@mui/material/TablePagination';
+
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -41,7 +43,10 @@ function UnapprovedProfile() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [deleteSuccessAlert, setDeleteSuccessAlert] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [totalRows, setTotalRows] = useState(0);
+    
 
 
      
@@ -106,15 +111,23 @@ const handleUnapproveClick = async (id) => {
                   Authorization: `Bearer ${storedToken}`,
                 }, 
               });
-        
-              setUsers(response.data);
+              setTotalRows(response.data.length);
+
+              // Paginate the data
+              const startIndex = page * rowsPerPage;
+              const endIndex = startIndex + rowsPerPage;
+              const paginatedUsers = response.data.slice(startIndex, endIndex);
+              setUsers(paginatedUsers);
+
+              //setUsers(response.data);
+
             } catch (error) {
               console.error('Error fetching unapproved users:', error);
             }
           };
         
           getAllUsers();
-        }, [loading]);
+        }, [page, rowsPerPage,loading]);
         
 
     return (
@@ -178,9 +191,22 @@ const handleUnapproveClick = async (id) => {
          </StyledTableRow>
               ))}
       </TableBody>
+   
+
      </Table>
   </TableContainer>
-  
+  <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={totalRows}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={(event, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(event) => {
+            setRowsPerPage(parseInt(event.target.value, 10));
+            setPage(0);
+          }}
+        />
       {successAlert && (
           <Alert
             severity="success"

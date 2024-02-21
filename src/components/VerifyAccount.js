@@ -11,6 +11,8 @@ import Sidebar from './Sidebar';
 import React , {useState, useEffect} from "react";
 import axios from 'axios';
 import { Button, Alert } from '@mui/material';
+import TablePagination from '@mui/material/TablePagination';
+
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -39,15 +41,15 @@ function VerifyAccount() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [deleteSuccessAlert, setDeleteSuccessAlert] = useState(false);
     const [loading, setLoading] = useState(false);
-
-
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [totalRows, setTotalRows] = useState(0);
 
      
 // approve user
       const handleApproveClick = async (userId) => {
         try {
           const storedToken = localStorage.getItem('token');
-
           setLoading(true);
           await axios.put(`http://localhost:8099/api/users/approve/${userId}`, {}, {
             headers: {
@@ -73,7 +75,6 @@ function VerifyAccount() {
   const handleUnapproveClick = async (id) => {
   try {
     const storedToken = localStorage.getItem('token');
-    
     await axios.put(`http://localhost:8099/api/users/archive/${id}`, {}, {
       headers: {
         Authorization: `Bearer ${storedToken}`,
@@ -104,16 +105,24 @@ function VerifyAccount() {
          Authorization: `Bearer ${storedToken}`,
                 },
               });
+
         // Filter out archived and approved users
         const filteredUsers = response.data.filter((user => !user.deleted && !user.approved) );
-              setUsers(filteredUsers);
+        setTotalRows(filteredUsers.length);
+              // setUsers(filteredUsers);
+
+               // Paginate the data
+        const startIndex = page * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+        setUsers(paginatedUsers);
             } catch (error) {
               console.error('Error fetching unapproved users:', error);
             }
           };
-        
           getAllUsers();
-        }, [loading]);
+        }, [page, rowsPerPage,loading]);
         
 
     return (
@@ -152,6 +161,18 @@ function VerifyAccount() {
             </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={totalRows}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={(event, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(event) => {
+            setRowsPerPage(parseInt(event.target.value, 10));
+            setPage(0);
+          }}
+        />
       {successAlert && (
           <Alert
             severity="success"

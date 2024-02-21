@@ -53,6 +53,21 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
   };
 
 
+  // UnapproveClick
+  const handleUnapproveClick = async (idContenu) => {
+    try {
+      const storedToken = localStorage.getItem('token');
+      await axios.put(`http://localhost:8099/api/contenus/archiveContenu/${idContenu}`, {}, {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      });
+
+    } catch (error) {
+      console.error('Erreur lors de la désapprobation : ', error);
+    }
+  };
+
   //CancelClick
   const handleCancelClick = () => {
     setUpdatedTitle(title);
@@ -131,7 +146,10 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
             >
               Approve
             </Button>
-            <Button variant="contained" color="error" style={{ textAlign: 'center', marginRight: '10px' }}>
+            <Button variant="contained" color="error" style={{ textAlign: 'center', marginRight: '10px' }}
+                                         onClick={() => handleUnapproveClick(idContenu)}
+
+            >
               UnApprove
             </Button>
             <Button variant="contained" color="warning" onClick={() => setIsEditing(true)}>
