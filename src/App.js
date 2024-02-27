@@ -7,6 +7,11 @@ import ProfileSettingsAdmin from './components/ProfileSettingsAdmin';
 import SignInAdmin from './components/SignInAdmin';
 import UnapprovedProfile from './components/UnapprovedProfile';
 import VerifyContent from './components/VerifyContent';
+import Programme from './components/Programme';
+import FormulaireDynamique from './components/FormulaireDynamique';
+import ItemProgram from './components/ItemProgram';
+
+
 
 function App() {
   return (
@@ -19,6 +24,12 @@ function App() {
     <Route path="/" exact Component={SignInAdmin}></Route>
     <Route path="/UnapprovedProfile" exact Component={UnapprovedProfile}></Route>
     <Route path="/VerifyContent/*" exact Component={VerifyContent}></Route>
+    <Route path="/Programme/*" exact Component={Programme}></Route>
+    <Route path="/FormulaireDynamique/*" exact Component={FormulaireDynamique}></Route>
+    <Route path="/ItemProgram/*" exact Component={ItemProgram}></Route>
+
+
+
 
 
     </Routes>
