@@ -14,6 +14,8 @@
  
 }
 
+
+ 
 .button-container {
   display: flex;
   justify-content: space-between;
@@ -60,7 +62,10 @@
   justify-content: center;
 }
 
-
+/* itemProgram.js */
+.menu-item.archived {
+  background-color: rgb(254, 243, 242);  
+}
 
 /* Ajoutez d'autres styles si nécessaire */
 

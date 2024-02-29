@@ -10,31 +10,23 @@ import Paper from '@mui/material/Paper';
 import Sidebar from './Sidebar';
 import React , {useState, useEffect} from "react";
 import axios from 'axios';
-import { Button, Alert } from '@mui/material';
+import { Button, Alert ,TextField,MenuItem} from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import TablePagination from '@mui/material/TablePagination';
+import SearchIcon from '@mui/icons-material/Search';
+import InputAdornment from '@mui/material/InputAdornment';
 
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: '#033568',
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
+  [`&.${tableCellClasses.head}`]: { backgroundColor: '#033568', color: theme.palette.common.white,},
+  [`&.${tableCellClasses.body}`]: {fontSize: 14, },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
+  '&:nth-of-type(odd)': { backgroundColor: theme.palette.action.hover,},
+  '&:last-child td, &:last-child th': { border: 0, },
 }));
 
 
@@ -46,30 +38,28 @@ function UnapprovedProfile() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [totalRows, setTotalRows] = useState(0);
-    
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [filterStatus, setFilterStatus] = useState('');
+
 
 
      
 // approve user
-      const handleApproveClick = async (userId) => {
-        
+      const handleApproveClick = async (userId) => { 
         try {
          const storedToken = localStorage.getItem('token');
-
           setLoading(true);
           await axios.put(`http://localhost:8099/api/users/approve/${userId}`, {}, {
             headers: {
               Authorization: `Bearer ${storedToken}`,
             }, 
           });
-
-          
           setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
           setSuccessAlert(true);
           setTimeout(() => {
             setSuccessAlert(false);
           }, 4000);
-      
         } catch (error) {
           console.error('Erreur lors de l\'approbation de l\'utilisateur :', error);
         }
@@ -79,27 +69,27 @@ function UnapprovedProfile() {
 
 
          // disapprove user
-const handleUnapproveClick = async (id) => {
-    try {
-      const storedToken = localStorage.getItem('token');
-      setLoading(true);
-      await axios.put(`http://localhost:8099/api/users/archive/${id}`, {}, {
-        headers: {
-          Authorization: `Bearer ${storedToken}`,
-        },
-      });
-      
-      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
-      setDeleteSuccessAlert(true);
-      setTimeout(() => {
-        setDeleteSuccessAlert(false);
-      }, 4000);
-    } catch (error) {
-      console.error('Erreur lors de la suppression de l\'utilisateur :', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      const handleUnapproveClick = async (id) => {
+        try {
+          const storedToken = localStorage.getItem('token');
+          setLoading(true);
+          await axios.put(`http://localhost:8099/api/users/archive/${id}`, {}, {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+            },
+          });
+          
+          setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+          setDeleteSuccessAlert(true);
+          setTimeout(() => {
+            setDeleteSuccessAlert(false);
+          }, 4000);
+        } catch (error) {
+          console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+        } finally {
+          setLoading(false);
+        }
+      };
 
         // get all uesr 
         useEffect(() => {
@@ -112,28 +102,59 @@ const handleUnapproveClick = async (id) => {
                 }, 
               });
               setTotalRows(response.data.length);
-
               // Paginate the data
               const startIndex = page * rowsPerPage;
               const endIndex = startIndex + rowsPerPage;
               const paginatedUsers = response.data.slice(startIndex, endIndex);
               setUsers(paginatedUsers);
-
               //setUsers(response.data);
-
             } catch (error) {
               console.error('Error fetching unapproved users:', error);
             }
           };
-        
           getAllUsers();
         }, [page, rowsPerPage,loading]);
         
-
+        //filtre
+        useEffect(() => {
+          const filteredData = users.filter((user) => {
+            const nameMatch = user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              user.role.toLowerCase().includes(searchTerm.toLowerCase());
+        
+            const statusMatch = filterStatus ? (user.approved && filterStatus === 'approved') ||
+                                                (user.deleted && filterStatus === 'deleted') ||
+                                                (!user.approved && !user.deleted && filterStatus === 'pending') : true;
+            return nameMatch && statusMatch;
+          });
+          setFilteredUsers(filteredData);
+        }, [searchTerm, users, filterStatus]);
+        
     return (
-        <div>
+    <div>
         <Sidebar /> 
         <div style={{ marginLeft: '240px', padding: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'  }}>
+              <TextField label="Search" variant="outlined"  margin="normal" id="search" name="search"
+                 style={{ width: '270px' }} value={searchTerm}  onChange={(e) => setSearchTerm(e.target.value)}
+                  InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start"> <SearchIcon /> </InputAdornment>  ), }} >  
+              </TextField>
+
+              <TextField select label="Filter by Status"  variant="outlined" id="select" name="select" margin="normal"
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                style={{ width: '270px' }}
+              >
+                <MenuItem value="">All</MenuItem>
+                <MenuItem value="approved">Approved</MenuItem>
+                <MenuItem value="pending">Pending Approval</MenuItem>
+                <MenuItem value="deleted">Deleted</MenuItem>
+              </TextField>
+            </div>
+
         <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table" >
           <TableHead  >
@@ -147,7 +168,7 @@ const handleUnapproveClick = async (id) => {
             </TableRow>
           </TableHead>
           <TableBody>
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <StyledTableRow key={user.id}>
                   <StyledTableCell>{user.firstName}</StyledTableCell>
                   <StyledTableCell>{user.lastName}</StyledTableCell>

@@ -12,8 +12,10 @@ import React , {useState, useEffect} from "react";
 import axios from 'axios';
 import { Button, Alert } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
+import { TextField} from '@mui/material';
 
-
+import SearchIcon from '@mui/icons-material/Search';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -44,7 +46,8 @@ function VerifyAccount() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [totalRows, setTotalRows] = useState(0);
-
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredUsers, setFilteredUsers] = useState([]);
      
 // approve user
       const handleApproveClick = async (userId) => {
@@ -71,7 +74,7 @@ function VerifyAccount() {
         }};
 
        
-   // disapprove user
+   // archieve user
   const handleUnapproveClick = async (id) => {
   try {
     const storedToken = localStorage.getItem('token');
@@ -80,9 +83,7 @@ function VerifyAccount() {
         Authorization: `Bearer ${storedToken}`,
       },
     });
-    
     setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
-
     setDeleteSuccessAlert(true);
     setTimeout(() => {
       setDeleteSuccessAlert(false);
@@ -95,7 +96,7 @@ function VerifyAccount() {
 };
 
 
-        // get all uesr unapproved
+        // get all uesr 
    useEffect(() => {
     const getAllUsers = async () => {
             try {
@@ -105,17 +106,14 @@ function VerifyAccount() {
          Authorization: `Bearer ${storedToken}`,
                 },
               });
-
         // Filter out archived and approved users
         const filteredUsers = response.data.filter((user => !user.deleted && !user.approved) );
         setTotalRows(filteredUsers.length);
               // setUsers(filteredUsers);
-
                // Paginate the data
         const startIndex = page * rowsPerPage;
         const endIndex = startIndex + rowsPerPage;
         const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
-
         setUsers(paginatedUsers);
             } catch (error) {
               console.error('Error fetching unapproved users:', error);
@@ -124,11 +122,29 @@ function VerifyAccount() {
           getAllUsers();
         }, [page, rowsPerPage,loading]);
         
+        // filtrer user
+        useEffect(() => {
+          const filteredData = users.filter(user =>
+            user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.role.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+          setFilteredUsers(filteredData);
+        }, [searchTerm, users]);
 
     return (
-        <div>
+    <div>
         <Sidebar /> 
         <div style={{ marginLeft: '240px', padding: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+              <TextField label="Search" variant="outlined"  margin="normal" id="search" name="search"
+                 style={{ width: '420px', marginTop:'0px' }} value={searchTerm}  onChange={(e) => setSearchTerm(e.target.value)}
+                  InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start"> <SearchIcon /> </InputAdornment>  ), }} >  
+              </TextField>
+            </div>
         <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table" >
           <TableHead  >
@@ -141,7 +157,7 @@ function VerifyAccount() {
             </TableRow>
           </TableHead>
           <TableBody>
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <StyledTableRow key={user.id}>
                   <StyledTableCell>{user.firstName}</StyledTableCell>
                   <StyledTableCell>{user.lastName}</StyledTableCell>
@@ -149,7 +165,6 @@ function VerifyAccount() {
                   <StyledTableCell>{user.role}</StyledTableCell>
                   <StyledTableCell style={{ textAlign: 'center'}}>
                     <Button variant="contained" 
-                    //color="success" 
                     style={{ textAlign: 'center', marginRight: '10px', backgroundColor:'#4CAF50' }}
                     onClick={() => handleApproveClick(user.id)}> Approved</Button>
                     <Button variant="contained" 
