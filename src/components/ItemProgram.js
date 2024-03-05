@@ -134,12 +134,14 @@ function ItemProgram() {
 
     //create item
       const handleSubmit = async () => {
+        
         try {
 
           if (!referenceItem || !name || !type || !destination || !dateDebut || !dateFin || !price) {
             console.error('Veuillez remplir tous les champs du formulaire.');
             return;
           }
+          const storedToken = localStorage.getItem('token');
          await axios.post('http://localhost:8099/api/items/createItem', {
               referenceItem: referenceItem,
               name: name,
@@ -151,7 +153,11 @@ function ItemProgram() {
               dateFin: dateFin.toISOString(),
               price:price,
               required:required
-          });
+          }, {}, {
+            headers: {
+            Authorization: `Bearer ${storedToken}`,
+            }, 
+        });
        
 
           setSuccessAlert(true);
@@ -232,6 +238,8 @@ function ItemProgram() {
       if (!selectedItem || !selectedItem.id) {
         return;
       }
+      const storedToken = localStorage.getItem('token');
+
       await axios.put(`http://localhost:8099/api/items/updateitem/${selectedItem.id}`, {
         referenceItem: selectedItem.referenceItem,
         name: selectedItem.name,
@@ -241,7 +249,11 @@ function ItemProgram() {
         dateFin: selectedItem.dateFin.toISOString(),
         price: selectedItem.price,
         required : required
-      });
+      }, {}, {
+        headers: {
+        Authorization: `Bearer ${storedToken}`,
+        }, 
+    });
 
       axios.get('http://localhost:8099/api/items/gelAllItems')
       .then(response => setInfoPrograms(response.data))
@@ -265,8 +277,13 @@ function ItemProgram() {
           console.error("ID de l'élément non valide.");
           return;
         }
-    
-        await axios.put(`http://localhost:8099/api/items/archiveItem/${selectedItem.id}`);
+        const storedToken = localStorage.getItem('token');
+
+        await axios.put(`http://localhost:8099/api/items/archiveItem/${selectedItem.id}`, {}, {
+          headers: {
+          Authorization: `Bearer ${storedToken}`,
+          }, 
+      });
         
         axios.get('http://localhost:8099/api/items/gelAllItems')
           .then(response => setInfoPrograms(response.data))

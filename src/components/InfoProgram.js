@@ -127,14 +127,19 @@ function InfoProgram({videoContenuUrl}) {
 
 
   const handleArchiveItem = async () => {
-
+   
     try {
       if (!selectedProgram || !selectedProgram.id) {
         console.error("ID de l'élément non valide.");
         return;
       }
-  
-      await axios.put(`http://localhost:8099/api/programs/archiveProgram/${selectedProgram.id}`);
+      const storedToken = localStorage.getItem('token');
+
+      await axios.put(`http://localhost:8099/api/programs/archiveProgram/${selectedProgram.id}`, {}, {
+        headers: {
+        Authorization: `Bearer ${storedToken}`,
+        }, 
+    });
       
       axios.get('http://localhost:8099/api/programs/gelAllPrograms')
         .then(response => setInfoProgram(response.data))
@@ -161,21 +166,26 @@ function InfoProgram({videoContenuUrl}) {
     return a.referenceProgram.localeCompare(b.referenceProgram);
   });
 
-//create program
-  const handleSubmit = async () => {
-    const programData = {
-      referenceProgram: referenceProgram,
-      nameProgram: nameProgram,
-      items: Array.isArray(selectedItems) ? selectedItems : [selectedItems],
-      contents: Array.isArray(selectedContents) ? selectedContents : [selectedContents],
-     };
+  //create program
+    const handleSubmit = async () => {
+      const programData = {
+        referenceProgram: referenceProgram,
+        nameProgram: nameProgram,
+        items: Array.isArray(selectedItems) ? selectedItems : [selectedItems],
+        contents: Array.isArray(selectedContents) ? selectedContents : [selectedContents],
+      };
+      const storedToken = localStorage.getItem('token');
 
-  await axios.post('http://localhost:8099/api/programs/createProgram', programData);
-  setSuccessAlert(true);
-  setTimeout(() => {
-    setSuccessAlert(false);
-  }, 4000);
-  };
+    await axios.post('http://localhost:8099/api/programs/createProgram', programData, {
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      }, 
+    });
+    setSuccessAlert(true);
+    setTimeout(() => {
+      setSuccessAlert(false);
+    }, 4000);
+    };
 
 //pour selectionner les items
   const handleItemsChange = (event) => {
@@ -196,7 +206,6 @@ function InfoProgram({videoContenuUrl}) {
     console.log("setSelectedContents", [...selectedContents]);
   };
   
-
 
   const handleItemsChangeDetails = (event) => {  
     const selectedItems = event.target.value.map(value => {
@@ -224,13 +233,18 @@ function InfoProgram({videoContenuUrl}) {
       if (!selectedProgram || !selectedProgram.id) {
         return;
       }
-  
+      const storedToken = localStorage.getItem('token');
+
       await axios.put(`http://localhost:8099/api/programs/updateProgram/${selectedProgram.id}`, {
         referenceProgram: selectedProgram.referenceProgram,
         nameProgram: selectedProgram.nameProgram,
         items: selectedItemsDetails.map(item => item.idItem),
         contents: selectedContentsDetails.map(content => content.idContenu),
-      });
+      }, {
+        headers: {
+           Authorization: `Bearer ${storedToken}`,
+         }, 
+       });
   
       axios.get('http://localhost:8099/api/programs/gelAllPrograms')
         .then(response => setInfoProgram(response.data))
