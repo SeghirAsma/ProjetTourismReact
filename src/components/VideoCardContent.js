@@ -4,16 +4,35 @@ import { Card, CardContent, Typography,TextField } from '@mui/material';
 import ReactPlayer from 'react-player'
 import { Button} from '@mui/material';
 import axios from 'axios';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import {  deepPurple } from '@mui/material/colors';
 
-
-
-const VideoCardContent = ({username, title, description, videoContenuUrl, idContenu}) => {
+const VideoCardContent = ({username, title, description, videoContenuUrl, idContenu,firstName,lastName}) => {
   const filename = videoContenuUrl.split('/').pop();
   const videoUrl=`http://localhost:8099/api/contenus/videos/${encodeURIComponent(filename)}`
 
   const [isEditing, setIsEditing] = useState(false);
   const [updatedTitle, setUpdatedTitle] = useState(title);
   const [updatedDescription, setUpdatedDescription] = useState(description);
+
+  // const [currentTime, setCurrentTime] = useState(0);
+
+  // const handleProgress = (progress) => {
+  //   setCurrentTime(progress.playedSeconds);
+  // };
+
+  // const getCurrentItem = () => {
+  //   if (currentTime >= 0 && currentTime < 4) {
+  //     return 'Item 1';
+  //   } else if (currentTime >= 4 && currentTime < 8) {
+  //     return 'Item 2';
+  //   }
+   
+  //   return 'Aucun élément actuel';
+  // };
+
+
 
 //updateClick
   const handleUpdateClick = async (id) => {
@@ -46,7 +65,7 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
           Authorization: `Bearer ${storedToken}`,
         },
       });
-     
+
     } catch (error) {
       console.error('Erreur lors de l\'approbation : ', error);
     }
@@ -106,11 +125,25 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
             controls={true}
             style={{ height: 'auto', width: '100%', maxWidth: '100%', alignItems: 'center' }}
           />
+
         </div>
 
       ) : (
         <div>
-            <Typography color="text.secondary">Creator: {username}</Typography>
+          <Typography color="text.secondary">
+              <Stack direction="row" spacing={2}>
+                <Avatar sx={{ bgcolor: deepPurple[500], width: 35, height: 35 }}>
+                  {/* {username.charAt(0).toUpperCase()} */}
+                  {`${lastName.charAt(0).toUpperCase()}${firstName.charAt(0).toUpperCase()}`}
+
+                </Avatar>
+                <div style={{ marginLeft: '8px' }}>
+                Creator: {`${lastName.toUpperCase()} ${firstName.charAt(0).toUpperCase()}${firstName.slice(1)}`}
+                {/* Creator: {username} */}
+
+                </div>
+              </Stack>
+          </Typography>
 
           <Typography variant="h5" component="div">{updatedTitle} </Typography>
           <Typography color="text.secondary">{updatedDescription}</Typography>
@@ -118,8 +151,12 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
           <ReactPlayer
             url={videoUrl}
             controls={true}
-            style={{ height: 'auto', width: '100%', maxWidth: '100%', alignItems: 'center' }}
+            style={{ height: 'auto', width: '50%', maxWidth: '100%', alignItems: 'center' }}
+           // onProgress={handleProgress}
           />
+                       
+      {/* <p>Élément actuel : {getCurrentItem()}</p> */}
+
         </div>
       )}
       <div style={{ textAlign: 'center', marginTop: '10px' }}>
@@ -147,8 +184,7 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
               Approve
             </Button>
             <Button variant="contained" color="error" style={{ textAlign: 'center', marginRight: '10px' }}
-                                         onClick={() => handleUnapproveClick(idContenu)}
-
+              onClick={() => handleUnapproveClick(idContenu)}
             >
               UnApprove
             </Button>
@@ -159,7 +195,7 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
         )}
       </div>
     </CardContent>
-  </Card>
+    </Card>
   );
 };
 

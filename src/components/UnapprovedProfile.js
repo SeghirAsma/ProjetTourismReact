@@ -155,8 +155,8 @@ function UnapprovedProfile() {
               </TextField>
             </div>
 
-        <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table" >
+        <TableContainer component={Paper} style={{maxHeight: '60vh'}}>
+        <Table sx={{ minWidth: 700}} aria-label="customized table" >
           <TableHead  >
             <TableRow >
               <StyledTableCell >First Name</StyledTableCell>

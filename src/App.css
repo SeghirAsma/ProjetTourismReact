@@ -40,7 +40,7 @@
   width: 100%;
   text-align: center;
   padding: 16px;
-  background-color: rgb(34, 200, 34); /* ajustez la couleur selon votre besoin */
+  background-color: rgb(34, 200, 34); /* ajustez la couleur selon votre besoin rgb(34, 200, 34)*/
   color: white;
 }
 
@@ -66,6 +66,8 @@
 .menu-item.archived {
   background-color: rgb(254, 243, 242);  
 }
+
+
 
 /* Ajoutez d'autres styles si nécessaire */
 

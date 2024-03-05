@@ -14,6 +14,10 @@ import dayjs from 'dayjs';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+
 function ItemProgram() {
     const [infoPrograms, setInfoPrograms] = useState([]);
     const [showForm, setShowForm] = useState(false);
@@ -27,6 +31,8 @@ function ItemProgram() {
     const [dateFin, setDateFin] = useState(dayjs());
     const [price, setPrice] = useState('');
     const [referenceItem, setReferenceItem] = useState('');
+    const [required, setRequired] = useState(true); // true par défaut, 
+
     const [selectedItem, setSelectedItem] = useState(null);
     const [successAlert, setSuccessAlert] = useState(false);
     const [deleteSuccessAlert, setDeleteSuccessAlert] = useState(false);
@@ -54,7 +60,7 @@ function ItemProgram() {
     
       const handleReferenceItemChange = (event) => {
         const { value } = event.target;
-        const referenceItemValidationRegex = /^[A-Z]{3,}$/;
+        const referenceItemValidationRegex = /^[A-Z0-9-_ *]{3,}$/;
         const isValid = referenceItemValidationRegex.test(value);
         setReferenceItem(value);
         setReferenceItemError(isValid ? '' : 'Reference Item must be in uppercase and have at least 3 characters.');
@@ -129,12 +135,12 @@ function ItemProgram() {
     //create item
       const handleSubmit = async () => {
         try {
+
           if (!referenceItem || !name || !type || !destination || !dateDebut || !dateFin || !price) {
             console.error('Veuillez remplir tous les champs du formulaire.');
             return;
           }
-    
-          await axios.post('http://localhost:8099/api/items/createItem', {
+         await axios.post('http://localhost:8099/api/items/createItem', {
               referenceItem: referenceItem,
               name: name,
               type:type,
@@ -143,8 +149,11 @@ function ItemProgram() {
               // dateFin:dateFin,
               dateDebut: dateDebut.toISOString(),
               dateFin: dateFin.toISOString(),
-              price:price
+              price:price,
+              required:required
           });
+       
+
           setSuccessAlert(true);
           setTimeout(() => {
             setSuccessAlert(false);
@@ -158,6 +167,8 @@ function ItemProgram() {
           setDestination('');
           setReferenceItem('');
           setType('');
+          setRequired(true);  //
+
           setShowForm(false);
 
          
@@ -208,6 +219,12 @@ function ItemProgram() {
     setSelectedItem({ ...selectedItem, price: event.target.value });
     };
 
+    useEffect(() => {
+      if (selectedItem && selectedItem.required !== undefined) {
+        setRequired(selectedItem.required);
+      }
+    }, [selectedItem]);
+    
     //update item
     const handleSubmitDetails = async (event) => {
     event.preventDefault(); 
@@ -215,7 +232,6 @@ function ItemProgram() {
       if (!selectedItem || !selectedItem.id) {
         return;
       }
-
       await axios.put(`http://localhost:8099/api/items/updateitem/${selectedItem.id}`, {
         referenceItem: selectedItem.referenceItem,
         name: selectedItem.name,
@@ -224,6 +240,7 @@ function ItemProgram() {
         dateDebut: selectedItem.dateDebut.toISOString(),
         dateFin: selectedItem.dateFin.toISOString(),
         price: selectedItem.price,
+        required : required
       });
 
       axios.get('http://localhost:8099/api/items/gelAllItems')
@@ -301,7 +318,7 @@ function ItemProgram() {
                 </ListItemIcon>
                 <ListItemText>
                   <Typography variant="h6" fontWeight="bold" color="primary">
-                    Program List
+                    Items List
                   </Typography>
                 </ListItemText>
               </MenuItem>
@@ -358,25 +375,52 @@ function ItemProgram() {
               margin="normal"  required fullWidth 
               value={selectedItem.destination} onChange={handleDestinationItemDetailsChange} />
           
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DatePicker']}>
-              <DatePicker label="Start Date" value={selectedItem.dateDebut} onChange={handleDateDebutItemDetailsChange} required fullWidth />
-            </DemoContainer>
-          </LocalizationProvider>
-        </Grid>
-        <Grid item xs={6}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DatePicker']}>
-              <DatePicker label="End Date" value={selectedItem.dateFin} onChange={handleDateFinItemDetailsChange} required fullWidth />
-            </DemoContainer>
-          </LocalizationProvider>
-        </Grid>
-      </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <DatePicker label="Start Date" value={selectedItem.dateDebut} 
+                  onChange={handleDateDebutItemDetailsChange} required fullWidth />
+                </DemoContainer>
+              </LocalizationProvider>
+            </Grid>
+            <Grid item xs={6}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker']}>
+                  <DatePicker label="End Date" value={selectedItem.dateFin} 
+                  onChange={handleDateFinItemDetailsChange} required fullWidth />
+                </DemoContainer>
+              </LocalizationProvider>
+            </Grid>
+          </Grid>
 
-      <TextField type="number"  id="price" label="Price" name="price" variant="outlined" margin="normal" autoComplete="price" 
-      required fullWidth value={selectedItem.price}   onChange={handlePriceItemDetailsChange}  />
+         <Grid container spacing={2}>
+            <Grid item xs={6}>
+               <TextField type="number"  id="price" label="Price" name="price" variant="outlined" margin="normal" 
+               autoComplete="price" required fullWidth
+              value={selectedItem.price}   
+              onChange={handlePriceItemDetailsChange}
+              InputProps={{startAdornment: (
+                   <InputAdornment position="start">
+                       <Typography variant="body2" color="textSecondary"> Accepts integer or double</Typography>
+                    </InputAdornment> ), }} />
+            </Grid>
+            <Grid item xs={6}>
+                <FormControl fullWidth margin="normal" required>
+                    <InputLabel id="required-select-label">Required</InputLabel>
+                    <Select
+                      labelId="required-select-label"
+                      id="required-select"
+                      value={required}
+                      label="Required"
+                      onChange={(e) => setRequired(e.target.value)}
+                    >
+                      <MenuItem value={true}>Mandatory</MenuItem>
+                      <MenuItem value={false}>Optional</MenuItem>
+                    </Select>
+                </FormControl>
+            </Grid>
+         </Grid>
 
             <div className="button-container">
               <Button type="submit" variant="contained" color="success"  className="submit-button" 
@@ -400,7 +444,7 @@ function ItemProgram() {
       <Container component="main" maxWidth="sm" sx={{ margin: 'auto',marginTop: '13px' }} >
         <Paper elevation={3} style={{ padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', width:'100%' }}>
           <Typography component="h1" variant="h5" style={{ fontWeight: 'bold'  }}>
-            Add New program
+            Add New Item
           </Typography>
           <form  style={{ width: '100%', marginTop: 16 }}  >
             <TextField id="referenceItem" label="Reference Item" name="referenceItem" variant="outlined" margin="normal" 
@@ -457,18 +501,35 @@ function ItemProgram() {
               </Grid>
             </Grid>
 
-           <TextField
-            type="number"  id="price" label="Price" name="price" variant="outlined" margin="normal" autoComplete="price" required fullWidth
-              value={price}   onChange={handlePriceItemChange} 
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Typography variant="body2" color="textSecondary">
-                      Accepts integer or double
-                    </Typography>
-                  </InputAdornment>
-                ),      }} >
-              </TextField>
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                       <TextField
+                         type="number" id="price" label="Price" name="price" variant="outlined" margin="normal"
+                         autoComplete="price" required fullWidth
+                         value={price}
+                         onChange={handlePriceItemChange}
+                        InputProps={{startAdornment: (
+                            <InputAdornment position="start">
+                                <Typography variant="body2" color="textSecondary"> Accepts integer or double</Typography>
+                            </InputAdornment> ),
+                                }} />
+                     </Grid>
+                    <Grid item xs={6}>
+                      <FormControl fullWidth margin="normal" required>
+                        <InputLabel id="required-select-label">Required</InputLabel>
+                        <Select
+                          labelId="required-select-label"
+                          id="required-select"
+                          value={required}
+                          label="Required"
+                          onChange={(e) => setRequired(e.target.value === 'true')}
+                        >
+                          <MenuItem value={'true'}>Mandatory</MenuItem>
+                          <MenuItem value={'false'}>Optional</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+              </Grid>
 
             <div className="button-container">
               <Button type="submit" variant="contained" color="success"  className="submit-button" onClick={handleSubmit}>
@@ -563,3 +624,33 @@ export default ItemProgram;
           </LocalizationProvider>
         </Grid>
       </Grid> */
+
+       /* <TextField
+            type="number"  id="price" label="Price" name="price" variant="outlined" margin="normal" autoComplete="price" required fullWidth
+              value={price}   onChange={handlePriceItemChange} 
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Typography variant="body2" color="textSecondary">
+                      Accepts integer or double
+                    </Typography>
+                  </InputAdornment>
+                ),      }} >
+              </TextField>
+              <FormControl fullWidth margin="normal" required>
+                <InputLabel id="required-select-label">Required</InputLabel>
+                <Select
+                  labelId="required-select-label"
+                  id="required-select"
+                  value={required}
+                  label="Required"
+                  onChange={(e) => setRequired(e.target.value === 'true')} 
+                >
+                  <MenuItem value={'true'}>Obligatoire</MenuItem>
+                  <MenuItem value={'false'}>Facultatif</MenuItem>
+                </Select>
+              </FormControl> */
+
+              
+      /* <TextField type="number"  id="price" label="Price" name="price" variant="outlined" margin="normal" autoComplete="price" 
+      required fullWidth value={selectedItem.price}   onChange={handlePriceItemDetailsChange}  /> */

@@ -145,7 +145,7 @@ function VerifyAccount() {
                      <InputAdornment position="start"> <SearchIcon /> </InputAdornment>  ), }} >  
               </TextField>
             </div>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{maxHeight: '60vh'}}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table" >
           <TableHead  >
             <TableRow >
