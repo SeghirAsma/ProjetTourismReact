@@ -10,8 +10,8 @@ import ItemProgram from './components/ItemProgram';
 import InfoProgram from './components/InfoProgram';
 import UploadVideo from './components/UploadVideo';
 import ApproveProgram from './components/ApproveProgram';
-import ScrollDialog from './components/ScrollDialog';
-
+import DashboardAdmin from './components/DashboardAdmin';
+import scrollDialog from './components/ScrollDialog';
 function App() {
   return (
    <Router>
@@ -26,7 +26,8 @@ function App() {
     <Route path="/InfoProgram/*" exact Component={InfoProgram}></Route>
     <Route path="/UploadVideo/*" exact Component={UploadVideo}></Route>
     <Route path="/ApproveProgram/*" exact Component={ApproveProgram}></Route>
-    <Route path="/ScrollDialog/*" exact Component={ScrollDialog}></Route>
+    <Route path="/DashboardAdmin/*" exact Component={DashboardAdmin}></Route>
+    <Route path="/scrollDialog/*" exact Component={scrollDialog}></Route>
 
 
 

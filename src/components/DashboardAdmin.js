@@ -16,7 +16,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import TablePagination from '@mui/material/TablePagination';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
-import { Card, CardContent, Typography, Grid } from '@mui/material';
+
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -30,7 +30,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 
-function UnapprovedProfile() {
+function DashboardAdmin() {
     const [users, setUsers] = useState([]);
     const [successAlert, setSuccessAlert] = useState(false);
     const [deleteSuccessAlert, setDeleteSuccessAlert] = useState(false);
@@ -41,9 +41,6 @@ function UnapprovedProfile() {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [filterStatus, setFilterStatus] = useState('');
-    const [approvedUsersCount, setApprovedUsersCount] = useState(0);
-    const [unapprovedUsersCount, setUnApprovedUsersCount] = useState(0);
-    const [pendingUsersCount, setPendingUsersCount] = useState(0);
 
 
 
@@ -105,16 +102,6 @@ function UnapprovedProfile() {
                 }, 
               });
               setTotalRows(response.data.length);
-
-              //
-              const approvedUsers = response.data.filter(user => user.approved);
-              setApprovedUsersCount(approvedUsers.length);
-
-              const unapprovedUsers = response.data.filter(user => user.deleted);
-              setUnApprovedUsersCount(unapprovedUsers.length);
-
-              const pendingUsers = response.data.filter(program => !program.approved &&  !program.deleted);
-              setPendingUsersCount(pendingUsers.length);
               // Paginate the data
               const startIndex = page * rowsPerPage;
               const endIndex = startIndex + rowsPerPage;
@@ -147,57 +134,8 @@ function UnapprovedProfile() {
     return (
     <div >
         <Sidebar /> 
-        <div style={{ marginLeft: '240px', padding: '20px', paddingTop:'0%', marginTop:'0' }}>
-    <Grid container spacing={3}>
-      <Grid item xs={12} sm={6} md={3} style={{paddingTop:'0%'}} >
-      <Card style={{ minHeight: '30px', minWidth: '200px' , backgroundColor:'#d9fff2'}}>
-         <CardContent>
-            <Typography variant="h6" component="div"  gutterBottom fontWeight={'bold'} style={{color:'#3798b8'}}>
-              Totally Account
-            </Typography>
-            <Typography variant="h4" component="div" style={{color:'#3798b8'}}>
-            {totalRows}     
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3} style={{paddingTop:'0%'}}>
-      <Card style={{ minHeight: '30px', minWidth: '200px' , backgroundColor:'#e9fcc8'}}>
-          <CardContent>
-            <Typography variant="h6" component="div"  gutterBottom fontWeight={'bold'} style={{color:'#8ab147'}}>
-              Approved Account
-            </Typography>
-            <Typography variant="h4" component="div" style={{color:'#8ab147'}}>
-            {((approvedUsersCount / totalRows) * 100).toFixed(2)}%
-            </Typography>
-          </CardContent>
-       </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3} style={{paddingTop:'0%'}}>
-      <Card style={{ minHeight: '30px', minWidth: '230px' , backgroundColor:'#ffd9d9'}}>
-          <CardContent>
-            <Typography variant="h6" component="div"  gutterBottom fontWeight={'bold'} style={{color:'#e15252'}}>
-              Archived Account
-            </Typography>
-            <Typography variant="h4" component="div" style={{color:'#e15252'}}>
-               {((unapprovedUsersCount / totalRows) * 100).toFixed(2)}%
-            </Typography>
-          </CardContent>
-      </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} md={3} style={{paddingTop:'0%'}}>
-      <Card style={{ minHeight: '30px', minWidth: '230px', backgroundColor:'#ffe9cb' }}>
-          <CardContent>
-            <Typography variant="h6" component="div"  gutterBottom fontWeight={'bold'} style={{color:'#cd8b2f'}}>
-              Pending Account
-            </Typography>
-            <Typography variant="h4" component="div" style={{color:'#cd8b2f'}}>
-               {((pendingUsersCount / totalRows) * 100).toFixed(2)}%
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-    </Grid>
+        <div style={{ marginLeft: '240px', padding: '20px', paddingTop:'0% ' }}>
+   
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'  }}>
               <TextField label="Search" variant="outlined"  margin="normal" id="search" name="search"
                  style={{ width: '270px' }} value={searchTerm}  onChange={(e) => setSearchTerm(e.target.value)}
@@ -216,9 +154,9 @@ function UnapprovedProfile() {
                 <MenuItem value="pending">Pending Approval</MenuItem>
                 <MenuItem value="deleted">Deleted</MenuItem>
               </TextField>
-            </div> 
+            </div>
 
-         <TableContainer component={Paper} style={{maxHeight: '51.1vh'}}>
+        <TableContainer component={Paper} style={{maxHeight: '60vh'}}>
         <Table sx={{ minWidth: 700}} aria-label="customized table" >
           <TableHead  >
             <TableRow >
@@ -279,7 +217,7 @@ function UnapprovedProfile() {
 
      </Table>
   </TableContainer>
-   <TablePagination
+  <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={totalRows}
@@ -290,7 +228,7 @@ function UnapprovedProfile() {
             setRowsPerPage(parseInt(event.target.value, 10));
             setPage(0);
           }}
-        /> 
+        />
       {successAlert && (
           <Alert
             severity="success"
@@ -316,5 +254,5 @@ function UnapprovedProfile() {
     );
   }
   
-  export default UnapprovedProfile;
+  export default DashboardAdmin;
   

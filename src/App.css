@@ -50,7 +50,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  background-color: #4a6481a3; /* Couleur de fond de la modalité, ajustez selon vos préférences  878686a3 */
+  background-color: #4a6481a3; /* Couleur de fond de la modalité, ajustez selon vos préférences  4a6481a3 */
   padding: 20px; /* Espace intérieur pour un meilleur aspect */
   border-radius: 8px; /* Coins arrondis pour un aspect plus esthétique */
 }

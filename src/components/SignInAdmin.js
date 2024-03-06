@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState,useEffect} from 'react';
 import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -14,7 +14,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom'; 
-
 
 function Copyright(props) {
   return (
@@ -37,6 +36,15 @@ export default function SignInAdmin() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); 
 
+  useEffect(() => {
+    // Vérifier si le token existe dans le localStorage au chargement du composant
+    const storedToken = localStorage.getItem('token');
+console.log("storedToken",storedToken)
+    if (storedToken) {
+      // Si le token existe, rediriger l'utilisateur vers la page appropriée
+      navigate('/UnapprovedProfile');
+    }
+  }, [navigate]);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -50,7 +58,7 @@ export default function SignInAdmin() {
 
     localStorage.setItem('token', accessToken);
       console.log('Authentication Successful', response.data);
-      navigate('/verifyaccount');
+      navigate('/UnapprovedProfile');
 
     } catch (error) {
       console.error('Authentication Failed', error);

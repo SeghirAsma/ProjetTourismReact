@@ -1,13 +1,14 @@
 
 import React, { useState } from "react";
-import { styled, useTheme, alpha } from '@mui/material/styles';
+// import { styled, useTheme, alpha } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; 
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -17,60 +18,69 @@ import About from "./About";
 import { useNavigate } from 'react-router-dom';
 import VerifyContent from "./VerifyContent";
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import UploadVideo from "./UploadVideo";
+import ItemProgram from "./ItemProgram";
+import InfoProgram from "./InfoProgram";
+import EventIcon from '@mui/icons-material/Event';
+import InfoIcon from '@mui/icons-material/Info';
 
 import { Link,  Route, Routes } from "react-router-dom";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+// import { useAuth } from '../context/AuthContext';
 
+// import axios from 'axios';
 
 import {
+    // Box, Drawer as MuiDrawer, AppBar as MuiAppBar, Toolbar, List, CssBaseline, Typography, Divider, IconButton, ListItem,
+    // ListItemButton, ListItemIcon, ListItemText, InputBase, MenuItem, Menu} from '@mui/material';
     Box, Drawer as MuiDrawer, AppBar as MuiAppBar, Toolbar, List, CssBaseline, Typography, Divider, IconButton, ListItem,
-    ListItemButton, ListItemIcon, ListItemText, InputBase, MenuItem, Menu} from '@mui/material';
-
+    ListItemButton, ListItemIcon, ListItemText, MenuItem, Menu} from '@mui/material';
 
     /* les constantes, les themes, les fct pour styles */ 
 const drawerWidth = 240;
-const iconsArray = [DashboardIcon, HowToRegIcon, AccountCircle,CheckCircleIcon];
+const iconsArray = [DashboardIcon, HowToRegIcon, AccountCircle,CheckCircleIcon,CloudUploadIcon,EventIcon,InfoIcon];
 const colorsArray = ['#2196F3', '#FF5722', '#FFC107','#4CAF50']; 
 
-//search style
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
+// //search style
+// const Search = styled('div')(({ theme }) => ({
+//   position: 'relative',
+//   borderRadius: theme.shape.borderRadius,
+//   backgroundColor: alpha(theme.palette.common.white, 0.15),
+//   '&:hover': {
+//     backgroundColor: alpha(theme.palette.common.white, 0.25),
+//   },
+//   marginRight: theme.spacing(2),
+//   marginLeft: 0,
+//   width: '100%',
+//   [theme.breakpoints.up('sm')]: {
+//     marginLeft: theme.spacing(3),
+//     width: 'auto',
+//   },
+// }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
+// const SearchIconWrapper = styled('div')(({ theme }) => ({
+//   padding: theme.spacing(0, 2),
+//   height: '100%',
+//   position: 'absolute',
+//   pointerEvents: 'none',
+//   display: 'flex',
+//   alignItems: 'center',
+//   justifyContent: 'center',
+// }));
 
-//input style pour search style
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
+// //input style pour search style
+// const StyledInputBase = styled(InputBase)(({ theme }) => ({
+//   color: 'inherit',
+//   '& .MuiInputBase-input': {
+//     padding: theme.spacing(1, 1, 1, 0),
+//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+//     transition: theme.transitions.create('width'),
+//     width: '100%',
+//     [theme.breakpoints.up('md')]: {
+//       width: '20ch',
+//     },
+//   },
+// }));
 
 
 const openedMixin = (theme) => ({
@@ -162,7 +172,10 @@ function Sidebar() {
       { path: '/dashboard', label: 'Dashboard', component: About },
       { path: '/verifyAccount', label: 'Verify Account', component: VerifyAccount },
       {path: '/UnapprovedProfile', label: 'Accounts', component: UnapprovedProfile},
-      {path: '/VerifyContent', label: 'Verify Content', component: VerifyContent}
+      {path: '/VerifyContent', label: 'Verify Content', component: VerifyContent},
+      {path: '/UploadVideo', label: 'Upload Video', component: UploadVideo},
+      {path: '/ItemProgram', label: 'Item Program', component: ItemProgram},
+      {path: '/InfoProgram', label: 'Info Program', component: InfoProgram}
       
     ];
 
@@ -172,10 +185,11 @@ function Sidebar() {
         navigate('/');
     };
 
-
-    const handleProfileMenuOpen = (event) => {
-      setAnchorEl(event.currentTarget); };
   
+    
+    const handleProfileMenuOpen = (event) => {
+      setAnchorEl(event.currentTarget); 
+      };
   
     const handleMenuClose = () => {
       setAnchorEl(null); };
@@ -202,6 +216,37 @@ function Sidebar() {
         <MenuItem onClick={handleLogoutClick}>LogOut <ExitToAppIcon sx={{ marginRight: 1,  color: '#165a9d' }} /></MenuItem>
       </Menu>
     );
+    // const renderMenu = (
+    //   <Menu
+    //     anchorEl={anchorEl}
+    //     anchorOrigin={{
+    //       vertical: 'top',
+    //       horizontal: 'right',
+    //     }}
+    //     id={menuId}
+    //     keepMounted
+    //     transformOrigin={{
+    //       vertical: 'top',
+    //       horizontal: 'right',
+    //     }}
+    //     open={isMenuOpen}
+    //     onClose={handleMenuClose}
+    //   >
+    //     <Typography variant="body2" color="textSecondary" style={{ padding: '8px' }}>
+    //       {/* Afficher les coordonnées de l'utilisateur */}
+    //       Coordonnées de l'utilisateur
+    //     </Typography>
+    //     <Divider />
+    
+    //     {/* Ajouter un bouton de déconnexion */}
+    //     <MenuItem onClick={handleLogoutClick}>
+    //       Déconnexion <ExitToAppIcon sx={{ marginRight: 1, color: '#165a9d' }} />
+    //     </MenuItem>
+    //   </Menu>
+    // );
+   
+     
+    
     const handleDrawerOpen = () => {
       setOpen(true);
     };
@@ -214,7 +259,7 @@ function Sidebar() {
      
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="fixed" open={open} >
+        <AppBar position="fixed" style={{ marginTop: '0' }} open={open} >
           <Toolbar >
             <IconButton
               color="inherit"
@@ -224,6 +269,7 @@ function Sidebar() {
               sx={{
                 marginRight: 5,
                 ...(open && { display: 'none' }),
+                
               }}
             >
               <MenuIcon />
@@ -234,7 +280,7 @@ function Sidebar() {
             </Typography>
            
           <Box sx={{ flexGrow: 1 }} />
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -242,7 +288,7 @@ function Sidebar() {
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
-          </Search>
+          </Search> */}
 
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
