@@ -1,4 +1,4 @@
-import {React, useState,useEffect} from 'react';
+import {React, useState} from 'react';
 import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -36,36 +36,37 @@ export default function SignInAdmin() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); 
 
-  useEffect(() => {
-    // Vérifier si le token existe dans le localStorage au chargement du composant
-    const storedToken = localStorage.getItem('token');
-console.log("storedToken",storedToken)
-    if (storedToken) {
-      // Si le token existe, rediriger l'utilisateur vers la page appropriée
-      navigate('/UnapprovedProfile');
-    }
-  }, [navigate]);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  
 
-    try {
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
       const response = await axios.post('http://localhost:8099/auth/authenticate', {
-        email,
-        password,
+          email,
+          password,
       });
 
-    const accessToken = response.data.token;
+      const accessToken = response.data.token;
+      localStorage.setItem('token', accessToken);
 
-    localStorage.setItem('token', accessToken);
-      console.log('Authentication Successful', response.data);
-      navigate('/UnapprovedProfile');
+      const userDetailsResponse = await axios.get('http://localhost:8099/api/users/currentUser', {
+          headers: {
+              Authorization: `Bearer ${accessToken}`,
+          },
+      });
 
-    } catch (error) {
+      const currentUserDetails = userDetailsResponse.data;
+
+      if (currentUserDetails.authorities[0].authority === 'admin') {
+          navigate('/scrollDialog');
+      } else {
+          navigate('/VerifyContent');
+      }
+  } catch (error) {
       console.error('Authentication Failed', error);
-    }
-  };
-
-
+  }
+};
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -77,14 +78,14 @@ console.log("storedToken",storedToken)
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers/travel)',
+            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
-        />  
+        /> 
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
@@ -125,3 +126,53 @@ console.log("storedToken",storedToken)
     </ThemeProvider>
   );
 }
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const response = await axios.post('http://localhost:8099/auth/authenticate', {
+  //       email,
+  //       password,
+  //     });
+
+  //   const accessToken = response.data.token;
+
+  //   localStorage.setItem('token', accessToken);
+  //     console.log('Authentication Successful', response.data);
+  //     navigate('/UnapprovedProfile');
+
+  //   } catch (error) {
+  //     console.error('Authentication Failed', error);
+  //   }
+  // };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     try {
+//         const response = await axios.post('http://localhost:8099/auth/authenticate', {
+//             email,
+//             password,
+//         });
+
+//         const accessToken = response.data.token;
+
+//         localStorage.setItem('token', accessToken);
+//         console.log('Authentication Successful', response.data);
+
+//         // Récupérer les détails de l'utilisateur actuellement authentifié
+//         const userDetailsResponse = await axios.get('http://localhost:8099/api/users/currentUser', {
+//             headers: {
+//                 Authorization: `Bearer ${accessToken}`,
+//             },
+//         });
+
+//         console.log('Current User Details:', userDetailsResponse.data);
+
+//         navigate('/UnapprovedProfile');
+//     } catch (error) {
+//         console.error('Authentication Failed', error);
+//     }
+// };

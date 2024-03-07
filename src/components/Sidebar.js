@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 // import { styled, useTheme, alpha } from '@mui/material/styles';
 import { styled, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -14,7 +14,6 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import SettingsIcon from '@mui/icons-material/Settings';
 import VerifyAccount from "./VerifyAccount";
 import UnapprovedProfile from "./UnapprovedProfile";
-import About from "./About";
 import { useNavigate } from 'react-router-dom';
 import VerifyContent from "./VerifyContent";
 import HowToRegIcon from '@mui/icons-material/HowToReg';
@@ -23,12 +22,13 @@ import ItemProgram from "./ItemProgram";
 import InfoProgram from "./InfoProgram";
 import EventIcon from '@mui/icons-material/Event';
 import InfoIcon from '@mui/icons-material/Info';
-
+import axios from "axios";
 import { Link,  Route, Routes } from "react-router-dom";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-// import { useAuth } from '../context/AuthContext';
-
-// import axios from 'axios';
+import ApproveProgram from "./ApproveProgram";
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import scrollDialog from "./ScrollDialog";
+import { Dashboard } from '@mui/icons-material';
 
 import {
     // Box, Drawer as MuiDrawer, AppBar as MuiAppBar, Toolbar, List, CssBaseline, Typography, Divider, IconButton, ListItem,
@@ -38,49 +38,8 @@ import {
 
     /* les constantes, les themes, les fct pour styles */ 
 const drawerWidth = 240;
-const iconsArray = [DashboardIcon, HowToRegIcon, AccountCircle,CheckCircleIcon,CloudUploadIcon,EventIcon,InfoIcon];
-const colorsArray = ['#2196F3', '#FF5722', '#FFC107','#4CAF50']; 
-
-// //search style
-// const Search = styled('div')(({ theme }) => ({
-//   position: 'relative',
-//   borderRadius: theme.shape.borderRadius,
-//   backgroundColor: alpha(theme.palette.common.white, 0.15),
-//   '&:hover': {
-//     backgroundColor: alpha(theme.palette.common.white, 0.25),
-//   },
-//   marginRight: theme.spacing(2),
-//   marginLeft: 0,
-//   width: '100%',
-//   [theme.breakpoints.up('sm')]: {
-//     marginLeft: theme.spacing(3),
-//     width: 'auto',
-//   },
-// }));
-
-// const SearchIconWrapper = styled('div')(({ theme }) => ({
-//   padding: theme.spacing(0, 2),
-//   height: '100%',
-//   position: 'absolute',
-//   pointerEvents: 'none',
-//   display: 'flex',
-//   alignItems: 'center',
-//   justifyContent: 'center',
-// }));
-
-// //input style pour search style
-// const StyledInputBase = styled(InputBase)(({ theme }) => ({
-//   color: 'inherit',
-//   '& .MuiInputBase-input': {
-//     padding: theme.spacing(1, 1, 1, 0),
-//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-//     transition: theme.transitions.create('width'),
-//     width: '100%',
-//     [theme.breakpoints.up('md')]: {
-//       width: '20ch',
-//     },
-//   },
-// }));
+const iconsArray = [Dashboard, HowToRegIcon, AccountCircle,CheckCircleIcon,CloudUploadIcon,EventIcon,InfoIcon,AssignmentTurnedInIcon,DashboardIcon];
+const colorsArray = [ '#2196F3','#FF5722', '#FFC107','#4CAF50']; 
 
 
 const openedMixin = (theme) => ({
@@ -169,13 +128,15 @@ function Sidebar() {
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const routes = [
-      { path: '/dashboard', label: 'Dashboard', component: About },
+      { path: '/scrollDialog', label: 'Dashboard', component: scrollDialog },
+
       { path: '/verifyAccount', label: 'Verify Account', component: VerifyAccount },
       {path: '/UnapprovedProfile', label: 'Accounts', component: UnapprovedProfile},
       {path: '/VerifyContent', label: 'Verify Content', component: VerifyContent},
       {path: '/UploadVideo', label: 'Upload Video', component: UploadVideo},
       {path: '/ItemProgram', label: 'Item Program', component: ItemProgram},
-      {path: '/InfoProgram', label: 'Info Program', component: InfoProgram}
+      {path: '/InfoProgram', label: 'Info Program', component: InfoProgram},
+      {path: '/ApproveProgram', label: 'Programs', component: ApproveProgram}
       
     ];
 
@@ -195,8 +156,30 @@ function Sidebar() {
       setAnchorEl(null); };
   
     const menuId = 'primary-search-account-menu';
+    const [currentUserDetails, setCurrentUserDetails] = useState(null);
+
+    useEffect(() => {
+      const fetchCurrentUserDetails = async () => {
+        try {
+          const accessToken = localStorage.getItem('token');
+          const userDetailsResponse = await axios.get('http://localhost:8099/api/users/currentUser', {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+  
+          const currentUserDetails = userDetailsResponse.data;
+          setCurrentUserDetails(currentUserDetails);
+  
+        } catch (error) {
+          console.error('Failed to fetch user details', error);
+        }
+      };
+  
+      fetchCurrentUserDetails();
+    }, []);  
     const renderMenu = (
-      <Menu
+      <Menu 
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'top',
@@ -211,39 +194,26 @@ function Sidebar() {
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-        <MenuItem onClick={handleLogoutClick}>LogOut <ExitToAppIcon sx={{ marginRight: 1,  color: '#165a9d' }} /></MenuItem>
+        <Typography   style={{ padding: '5px',Color: '#165a9d', textAlign:'center', fontWeight:'bold', color: '#165a9d' }}>
+       <span >USER COORDINATES</span>   </Typography>
+       <Divider />
+       <Typography  variant="body2" color="textSecondary" style={{ padding: '15px' , backgroundColor:'#d1e5f8'}} >
+          {currentUserDetails && (
+        <div>
+          <p>Email: {currentUserDetails.userEntity.email}</p>
+          <p>First Name: {currentUserDetails.userEntity.firstName}</p>
+          <p>Last Name: {currentUserDetails.userEntity.lastName}</p>
+          <p>Role: {currentUserDetails.userEntity.role}</p>
+
+        </div>
+      )}
+        </Typography>
+        <Divider />
+       <MenuItem onClick={handleLogoutClick} sx={{ marginRight: 1, color: '#165a9d' }} >
+         LogOut <ExitToAppIcon sx={{ marginRight: 1, color: '#165a9d' }} />
+        </MenuItem>
       </Menu>
     );
-    // const renderMenu = (
-    //   <Menu
-    //     anchorEl={anchorEl}
-    //     anchorOrigin={{
-    //       vertical: 'top',
-    //       horizontal: 'right',
-    //     }}
-    //     id={menuId}
-    //     keepMounted
-    //     transformOrigin={{
-    //       vertical: 'top',
-    //       horizontal: 'right',
-    //     }}
-    //     open={isMenuOpen}
-    //     onClose={handleMenuClose}
-    //   >
-    //     <Typography variant="body2" color="textSecondary" style={{ padding: '8px' }}>
-    //       {/* Afficher les coordonnées de l'utilisateur */}
-    //       Coordonnées de l'utilisateur
-    //     </Typography>
-    //     <Divider />
-    
-    //     {/* Ajouter un bouton de déconnexion */}
-    //     <MenuItem onClick={handleLogoutClick}>
-    //       Déconnexion <ExitToAppIcon sx={{ marginRight: 1, color: '#165a9d' }} />
-    //     </MenuItem>
-    //   </Menu>
-    // );
    
      
     
@@ -388,3 +358,67 @@ function Sidebar() {
   
   export default Sidebar;
   
+  // Effectuer la requête une fois après le rendu initial
+    // const renderMenu = (
+    //   <Menu
+    //     anchorEl={anchorEl}
+    //     anchorOrigin={{
+    //       vertical: 'top',
+    //       horizontal: 'right',
+    //     }}
+    //     id={menuId}
+    //     keepMounted
+    //     transformOrigin={{
+    //       vertical: 'top',
+    //       horizontal: 'right',
+    //     }}
+    //     open={isMenuOpen}
+    //     onClose={handleMenuClose}
+    //   >
+    //     <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+    //     <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+    //     <MenuItem onClick={handleLogoutClick}>LogOut <ExitToAppIcon sx={{ marginRight: 1,  color: '#165a9d' }} /></MenuItem>
+    //   </Menu>
+    // );
+
+
+    // //search style
+// const Search = styled('div')(({ theme }) => ({
+//   position: 'relative',
+//   borderRadius: theme.shape.borderRadius,
+//   backgroundColor: alpha(theme.palette.common.white, 0.15),
+//   '&:hover': {
+//     backgroundColor: alpha(theme.palette.common.white, 0.25),
+//   },
+//   marginRight: theme.spacing(2),
+//   marginLeft: 0,
+//   width: '100%',
+//   [theme.breakpoints.up('sm')]: {
+//     marginLeft: theme.spacing(3),
+//     width: 'auto',
+//   },
+// }));
+
+// const SearchIconWrapper = styled('div')(({ theme }) => ({
+//   padding: theme.spacing(0, 2),
+//   height: '100%',
+//   position: 'absolute',
+//   pointerEvents: 'none',
+//   display: 'flex',
+//   alignItems: 'center',
+//   justifyContent: 'center',
+// }));
+
+// //input style pour search style
+// const StyledInputBase = styled(InputBase)(({ theme }) => ({
+//   color: 'inherit',
+//   '& .MuiInputBase-input': {
+//     padding: theme.spacing(1, 1, 1, 0),
+//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+//     transition: theme.transitions.create('width'),
+//     width: '100%',
+//     [theme.breakpoints.up('md')]: {
+//       width: '20ch',
+//     },
+//   },
+// }));

@@ -18,7 +18,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Card, CardContent, Typography, Grid } from '@mui/material';
 
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: { backgroundColor: '#033568', color: theme.palette.common.white,},
   [`&.${tableCellClasses.body}`]: {fontSize: 14, },
@@ -44,9 +43,7 @@ function UnapprovedProfile() {
     const [approvedUsersCount, setApprovedUsersCount] = useState(0);
     const [unapprovedUsersCount, setUnApprovedUsersCount] = useState(0);
     const [pendingUsersCount, setPendingUsersCount] = useState(0);
-
-
-
+  
      
 // approve user
       const handleApproveClick = async (userId) => { 
@@ -150,7 +147,8 @@ function UnapprovedProfile() {
         <div style={{ marginLeft: '240px', padding: '20px', paddingTop:'0%', marginTop:'0' }}>
     <Grid container spacing={3}>
       <Grid item xs={12} sm={6} md={3} style={{paddingTop:'0%'}} >
-      <Card style={{ minHeight: '30px', minWidth: '200px' , backgroundColor:'#d9fff2'}}>
+      <Card style={{ minHeight: '30px', minWidth: '200px' , backgroundColor:'#d9fff2', position: 'relative', overflow: 'hidden'}}  >
+      <div className="shine-background" />
          <CardContent>
             <Typography variant="h6" component="div"  gutterBottom fontWeight={'bold'} style={{color:'#3798b8'}}>
               Totally Account
@@ -162,7 +160,8 @@ function UnapprovedProfile() {
         </Card>
       </Grid>
       <Grid item xs={12} sm={6} md={3} style={{paddingTop:'0%'}}>
-      <Card style={{ minHeight: '30px', minWidth: '200px' , backgroundColor:'#e9fcc8'}}>
+      <Card style={{ minHeight: '30px', minWidth: '200px' , backgroundColor:'#e9fcc8', position: 'relative', overflow: 'hidden'}}>
+      <div className="shine-background" />
           <CardContent>
             <Typography variant="h6" component="div"  gutterBottom fontWeight={'bold'} style={{color:'#8ab147'}}>
               Approved Account
@@ -174,7 +173,8 @@ function UnapprovedProfile() {
        </Card>
       </Grid>
       <Grid item xs={12} sm={6} md={3} style={{paddingTop:'0%'}}>
-      <Card style={{ minHeight: '30px', minWidth: '230px' , backgroundColor:'#ffd9d9'}}>
+      <Card style={{ minHeight: '30px', minWidth: '230px' , backgroundColor:'#ffd9d9', position: 'relative', overflow: 'hidden'}}>
+      <div className="shine-background" />
           <CardContent>
             <Typography variant="h6" component="div"  gutterBottom fontWeight={'bold'} style={{color:'#e15252'}}>
               Archived Account
@@ -186,7 +186,8 @@ function UnapprovedProfile() {
       </Card>
       </Grid>
       <Grid item xs={12} sm={6} md={3} style={{paddingTop:'0%'}}>
-      <Card style={{ minHeight: '30px', minWidth: '230px', backgroundColor:'#ffe9cb' }}>
+      <Card style={{ minHeight: '30px', minWidth: '230px', backgroundColor:'#ffe9cb' , position: 'relative', overflow: 'hidden'}}>
+      <div className="shine-background" />
           <CardContent>
             <Typography variant="h6" component="div"  gutterBottom fontWeight={'bold'} style={{color:'#cd8b2f'}}>
               Pending Account
@@ -198,25 +199,27 @@ function UnapprovedProfile() {
         </Card>
       </Grid>
     </Grid>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'  }}>
-              <TextField label="Search" variant="outlined"  margin="normal" id="search" name="search"
-                 style={{ width: '270px' }} value={searchTerm}  onChange={(e) => setSearchTerm(e.target.value)}
-                  InputProps={{
-                  startAdornment: (
-                     <InputAdornment position="start"> <SearchIcon /> </InputAdornment>  ), }} >  
-              </TextField>
+  
 
-              <TextField select label="Filter by Status"  variant="outlined" id="select" name="select" margin="normal"
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                style={{ width: '270px' }}
-              >
-                <MenuItem value="">All</MenuItem>
-                <MenuItem value="approved">Approved</MenuItem>
-                <MenuItem value="pending">Pending Approval</MenuItem>
-                <MenuItem value="deleted">Deleted</MenuItem>
-              </TextField>
-            </div> 
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'  }}>
+                        <TextField label="Search" variant="outlined"  margin="normal" id="search" name="search"
+                          style={{ width: '270px' }} value={searchTerm}  onChange={(e) => setSearchTerm(e.target.value)}
+                            InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start"> <SearchIcon /> </InputAdornment>  ), }} >  
+                        </TextField>
+
+                        <TextField select label="Filter by Status"  variant="outlined" id="select" name="select" margin="normal"
+                          value={filterStatus}
+                          onChange={(e) => setFilterStatus(e.target.value)}
+                          style={{ width: '270px' }}
+                        >
+                          <MenuItem value="">All</MenuItem>
+                          <MenuItem value="approved">Approved</MenuItem>
+                          <MenuItem value="pending">Pending Approval</MenuItem>
+                          <MenuItem value="deleted">Deleted</MenuItem>
+                        </TextField>
+              </div> 
 
          <TableContainer component={Paper} style={{maxHeight: '51.1vh'}}>
         <Table sx={{ minWidth: 700}} aria-label="customized table" >
