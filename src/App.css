@@ -9,7 +9,7 @@
   float: right;
  /* border-radius: 30%; */
  margin-top: 2%;
- background-color: #d1e5f8;  /*0a396ca3    */ 
+ background-color: #f3f1f1;  /*0a396ca3    */ 
  margin-right: 2%;
  
 }
@@ -50,7 +50,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  background-color: #4a6481a3; /* Couleur de fond de la modalité, ajustez selon vos préférences  4a6481a3 */
+  background-color: #3bc01a; /* Couleur de fond de la modalité, ajustez selon vos préférences  4a6481a3 */
   padding: 20px; /* Espace intérieur pour un meilleur aspect */
   border-radius: 8px; /* Coins arrondis pour un aspect plus esthétique */
 }

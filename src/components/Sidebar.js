@@ -5,13 +5,13 @@ import { styled, useTheme } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
+// import InboxIcon from '@mui/icons-material/MoveToInbox';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 // import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import SettingsIcon from '@mui/icons-material/Settings';
+// import SettingsIcon from '@mui/icons-material/Settings';
 import VerifyAccount from "./VerifyAccount";
 import UnapprovedProfile from "./UnapprovedProfile";
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +29,7 @@ import ApproveProgram from "./ApproveProgram";
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import scrollDialog from "./ScrollDialog";
 import { Dashboard } from '@mui/icons-material';
-
+import ProfileSettingsAdmin from './ProfileSettingsAdmin'
 import {
     // Box, Drawer as MuiDrawer, AppBar as MuiAppBar, Toolbar, List, CssBaseline, Typography, Divider, IconButton, ListItem,
     // ListItemButton, ListItemIcon, ListItemText, InputBase, MenuItem, Menu} from '@mui/material';
@@ -40,6 +40,8 @@ import {
 const drawerWidth = 240;
 const iconsArray = [Dashboard, HowToRegIcon, AccountCircle,CheckCircleIcon,CloudUploadIcon,EventIcon,InfoIcon,AssignmentTurnedInIcon,DashboardIcon];
 const colorsArray = [ '#2196F3','#FF5722', '#FFC107','#4CAF50']; 
+
+const iconsArray2 = [AccountCircle,ExitToAppIcon,CloudUploadIcon,EventIcon,InfoIcon,AssignmentTurnedInIcon,DashboardIcon];
 
 
 const openedMixin = (theme) => ({
@@ -140,6 +142,12 @@ function Sidebar() {
       
     ];
 
+    const routes2=[
+      { path: '/ProfileSettingsAdmin', label: 'Profile & Settings', component: ProfileSettingsAdmin },
+      
+
+    ]
+
     const navigate = useNavigate();
 
     const handleLogoutClick = () => {
@@ -197,7 +205,7 @@ function Sidebar() {
         <Typography   style={{ padding: '5px',Color: '#165a9d', textAlign:'center', fontWeight:'bold', color: '#165a9d' }}>
        <span >USER COORDINATES</span>   </Typography>
        <Divider />
-       <Typography  variant="body2" color="textSecondary" style={{ padding: '15px' , backgroundColor:'#d1e5f8'}} >
+       <Typography  variant="body2" color="textSecondary" style={{ padding: '15px' , backgroundColor:'#fbf9f3'}} >
           {currentUserDetails && (
         <div>
           <p>Email: {currentUserDetails.userEntity.email}</p>
@@ -317,7 +325,7 @@ function Sidebar() {
           </List>
           <Divider sx={{ backgroundColor: 'white' }}/>
           <List>
-            {['Profile', 'Settings', 'Spam'].map((text, index) => (
+            {/* {['Profile', 'Settings', 'Spam'].map((text, index) => (
               <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                 <ListItemButton
                   sx={{
@@ -340,7 +348,37 @@ function Sidebar() {
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
               </ListItem>
+            ))} */}
+            <List>
+            {routes2.map((route, index) => (
+              <ListItem key={route.label} disablePadding sx={{ display: 'block' }}>
+                <ListItemButton
+                component={Link}
+                to={route.path}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
+                    color: 'white', 
+
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                      color: colorsArray[index % colorsArray.length], // Définir la couleur de l'icône
+
+                    }}
+                  >
+              {React.createElement(iconsArray2[index % iconsArray2.length])}
+                  </ListItemIcon>
+                  <ListItemText primary={route.label} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
             ))}
+          </List>
           </List>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -348,6 +386,11 @@ function Sidebar() {
          
           <Routes>
     {routes.map((route) => (
+      <Route key={route.label} path={route.path} element={<route.component />} />
+    ))}
+  </Routes>
+  <Routes>
+    {routes2.map((route) => (
       <Route key={route.label} path={route.path} element={<route.component />} />
     ))}
   </Routes>

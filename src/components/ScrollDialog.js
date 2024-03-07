@@ -123,9 +123,9 @@ function UnapprovedProfile() {
           getAllPrograms();
       }, []);
     return (
-    <div >
-        <Sidebar /> 
-        <div style={{ marginLeft: '240px', padding: '20px', paddingTop:'0%', marginTop:'0' }}>
+<div >     
+   <Sidebar /> 
+        <div style={{ marginLeft: '240px', padding: '20px', paddingTop:'0%' }}>
     <Grid container spacing={3}>
       <Grid item xs={12} sm={6} md={3} style={{paddingTop:'0%'}} >
       <Card style={{ minHeight: '30px', minWidth: '200px' , backgroundColor:'#d9fff2', position: 'relative', overflow: 'hidden'}}  >
@@ -221,7 +221,7 @@ function UnapprovedProfile() {
       <div className="shine-background" />
          <CardContent>
             <Typography variant="h6" component="div"  gutterBottom fontWeight={'bold'} style={{color:'#3798b8'}}>
-              Totally Programs
+              Totally Programs 
             </Typography>
             <Typography variant="h4" component="div" style={{color:'#3798b8'}}>
             {totalRowsProgram}     

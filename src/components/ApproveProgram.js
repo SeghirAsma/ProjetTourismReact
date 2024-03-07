@@ -211,7 +211,7 @@ function ProgramList() {
                             <Button 
                                 variant="contained"  style={{ textAlign: 'center', marginRight: '10px' , backgroundColor:'#4CAF50'}}
                                 onClick={() => handleApproveClick(program.idProgram)}
-                            >
+                            > 
                                 Approve
                             </Button>
                             <Button 
