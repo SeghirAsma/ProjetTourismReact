@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 
 const FormComponent = () => {
   const [videos, setVideos] = useState([]);
-  const videosPerPage = 3; 
+  const videosPerPage = 4; 
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const FormComponent = () => {
           {videos
             .slice((page - 1) * videosPerPage, page * videosPerPage)
             .map((video) => (
-              <Grid item xs={12} sm={4} key={video.idContenu}>
+              <Grid item xs={12} sm={3} key={video.idContenu}>
                 <VideoCardContent
                   username={video.userEntity ? video.userEntity.firstName : ''}
                   firstName={video.userEntity ? video.userEntity.firstName : ''}

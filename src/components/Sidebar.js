@@ -30,6 +30,8 @@ import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import scrollDialog from "./ScrollDialog";
 import { Dashboard } from '@mui/icons-material';
 import ProfileSettingsAdmin from './ProfileSettingsAdmin'
+import Avatar from '@mui/material/Avatar';
+
 import {
     // Box, Drawer as MuiDrawer, AppBar as MuiAppBar, Toolbar, List, CssBaseline, Typography, Divider, IconButton, ListItem,
     // ListItemButton, ListItemIcon, ListItemText, InputBase, MenuItem, Menu} from '@mui/material';
@@ -165,6 +167,9 @@ function Sidebar() {
   
     const menuId = 'primary-search-account-menu';
     const [currentUserDetails, setCurrentUserDetails] = useState(null);
+    const profileImageUrl = currentUserDetails?.userEntity?.profileImageUrl || '';
+    const filename = profileImageUrl ? profileImageUrl.split('/').pop() : '';
+    const imageUrl=`http://localhost:8099/api/users/images/${encodeURIComponent(filename)}`
 
     useEffect(() => {
       const fetchCurrentUserDetails = async () => {
@@ -208,9 +213,14 @@ function Sidebar() {
        <Typography  variant="body2" color="textSecondary" style={{ padding: '15px' , backgroundColor:'#fbf9f3'}} >
           {currentUserDetails && (
         <div>
+            <Avatar
+          alt=""
+          src={imageUrl }
+          style={{ width: '75px', height: '75px', cursor: 'pointer', margin: '0 auto 10px',
+          }}
+          />
           <p>Email: {currentUserDetails.userEntity.email}</p>
-          <p>First Name: {currentUserDetails.userEntity.firstName}</p>
-          <p>Last Name: {currentUserDetails.userEntity.lastName}</p>
+          <p>User Name: {currentUserDetails.userEntity.lastName.toUpperCase()} {currentUserDetails.userEntity.firstName}</p>
           <p>Role: {currentUserDetails.userEntity.role}</p>
 
         </div>
@@ -258,18 +268,9 @@ function Sidebar() {
             </Typography>
            
           <Box sx={{ flexGrow: 1 }} />
-          {/* <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search> */}
-
+   
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton
+            {/* <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
@@ -277,9 +278,29 @@ function Sidebar() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            > */}
+              {currentUserDetails && (
+                  <div>
+                    <Avatar
+                      alt=""
+                      src={imageUrl || "https://www.shutterstock.com/image-vector/man-icon-vector-260nw-1040084344.jpg"}
+                      style={{
+                        width: '35px',
+                        height: '35px',
+                        cursor: 'pointer',
+                        // margin: '0 auto 10px',
+                      }}
+                      size="large"
+                              edge="end"
+                              aria-label="account of current user"
+                              aria-controls={menuId}
+                              aria-haspopup="true"
+                              onClick={handleProfileMenuOpen}
+                              color="inherit"
+                    />
+                  </div>
+                )}
+            {/* </IconButton> */}
           </Box>
 
           </Toolbar>

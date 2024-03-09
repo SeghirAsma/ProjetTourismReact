@@ -1,9 +1,13 @@
 import Sidebar from './Sidebar';
 import React, {useState, useEffect, useRef} from 'react';
-import { Container, Typography, Paper, Grid, TextField, Button,Divider,Alert } from '@mui/material';
+import { Container, Typography, Paper, Grid, TextField, Button,Divider,Alert ,Avatar,ListItem} from '@mui/material';
 import axios from 'axios';
 import SettingsIcon from '@mui/icons-material/Settings';
 import IconButton from '@mui/material/IconButton';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'; 
+import EmailIcon from '@mui/icons-material/Email';
+import FaceIcon from '@mui/icons-material/Face';
+import WorkIcon from '@mui/icons-material/Work';
 
 function Profile() {
   const [currentUserDetails, setCurrentUserDetails] = useState(null);
@@ -151,14 +155,19 @@ function Profile() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', marginTop: '80px' }}>
+    <div style={{ display: 'flex', marginTop: '80px' }}>  
+    {/* flexDirection: 'row', */}
    <Sidebar />
     <Container sx={{ mt: 4 }}>
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 3, height:'525px' ,backgroundColor: '#fbf9f3'}}>
+          <Paper sx={{ p: 3, height:'543px' ,backgroundColor: '#fbf9f3'}}>
+            
             <Typography variant="h6" gutterBottom style={{fontWeight:'bold', color:'#033568'}}>
-              Profile Details
+            <IconButton color="inherit" >
+            <AccountCircleIcon fontSize="large" color="#033568" /> 
+            </IconButton>
+            Profile Details
             </Typography>
             <div style={{ textAlign: 'center' }}>
             <input
@@ -169,70 +178,73 @@ function Profile() {
                   id="imageInput"
                   ref={fileInputRef}
                 />
-               <img
-        src={imageUrl || "https://www.shutterstock.com/image-vector/man-icon-vector-260nw-1040084344.jpg"}
-        alt=""
-                  style={{ borderRadius: '50%',
-                    maxWidth: '200px',
-                    maxHeight: '150px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={handleImageClick}
-                />
-              
+          <Avatar
+          alt=""
+          src={imageUrl || "https://www.shutterstock.com/image-vector/man-icon-vector-260nw-1040084344.jpg"}
+          style={{ width: '150px', height: '150px', cursor: 'pointer', margin: '0 auto 10px',
+          }}
+          onClick={handleImageClick}
+          />
               <Typography variant="body2" color="textSecondary" gutterBottom>
-              All types of pictures are allowed
+              JPG, JPEG or PNG 
               </Typography>
               {selectedFileName &&(
               <Typography variant="body2" color="textSecondary" gutterBottom>
-  {`Selected Image: ${selectedFileName}`}
-</Typography> )}
-              <Button
-                  variant="contained"
-                  type="button"
-                  style={{ backgroundColor: '#3bc01a', marginTop: '10px' }}
+                {`Selected Image: ${selectedFileName}`}
+              </Typography> )}
+              <Button 
+                  variant="contained" type="button" style={{ backgroundColor: '#165ca1', marginTop: '10px' }}
                   onClick={handleImageUpload}
                 >
-                  Import new Picture
+                  Save new Picture
                 </Button>
            <Divider />
-                 <Typography  variant="body2" color="textSecondary" style={{ padding: '15px' }} >
+               <Typography  variant="body2" color="textSecondary" style={{ padding: '15px' }} >
           {currentUserDetails && (
-        <div style={{ fontSize: '17px'}}>
-          <p><span style={{fontWeight:'bold', color:'#84405a'}}>Email:</span> {currentUserDetails.userEntity.email}</p>
-          <p><span style={{fontWeight:'bold', color:'#84405a'}}>First Name:</span>  {currentUserDetails.userEntity.firstName}</p>
-          <p><span style={{fontWeight:'bold', color:'#84405a'}}>Last Name: </span> {currentUserDetails.userEntity.lastName}</p>
-          <p><span style={{fontWeight:'bold', color:'#84405a'}}>Role:</span>  {currentUserDetails.userEntity.role}</p>
+        <div style={{ fontSize: '17px' , textAlign: 'center', marginLeft: '39px'}}>
+                  <ListItem disableGutters>
+                      <EmailIcon color="primary" fontSize="small" />
+                        <span style={{ fontWeight: 'bold', color: '#84405a' , marginLeft: '5px'}}>
+                          Email:</span> {currentUserDetails.userEntity.email}
+                    </ListItem>
+                  <ListItem disableGutters>
+                    <FaceIcon color="secondary" fontSize="small" />
+                    <span style={{ fontWeight: 'bold', color: '#84405a', marginLeft: '5px' }}>
+                      User Name:</span>{currentUserDetails.userEntity.lastName.toUpperCase()} {currentUserDetails.userEntity.firstName}  
+                  </ListItem>
+                
+                  <ListItem disableGutters>
+                    <WorkIcon color="warning" fontSize="small" />
+                    <span style={{ fontWeight: 'bold', color: '#84405a' , marginLeft: '5px'}}>Role:</span> {currentUserDetails.userEntity.role}
+                  </ListItem>
+        </div> )}
+               </Typography>
 
-        </div>
-      )}
-        </Typography>
-             
             </div>
           </Paper>
         </Grid>
         <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 3 , backgroundColor: '#fbf9f3'}}>
+          <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom style={{fontWeight:'bold', color:'#033568'}}>
-            <IconButton color="inherit" >
-              <SettingsIcon />
+            <IconButton color="inherit"  >
+              <SettingsIcon  fontSize="large" color="#033568" />
             </IconButton>
               Profile Settings
             </Typography>
             {currentUserDetails && (
             <form>
-              <TextField fullWidth  id="inputfirstname" variant="outlined" margin="normal"
+              <TextField fullWidth  id="inputfirstname" variant="outlined" margin="normal" label="First Name"
               value={updatedUser.firstName}
               onChange={(e) => handleInputChange('firstName', e.target.value)}/>
-               <TextField fullWidth id="inputlastname" variant="outlined" margin="normal"
+               <TextField fullWidth id="inputlastname" variant="outlined" margin="normal"  label="Last Name"
                 value={updatedUser.lastName}
                 onChange={(e) => handleInputChange('lastName', e.target.value)}/>
-                <TextField fullWidth  id="inputemail" variant="outlined" margin="normal"
+                <TextField fullWidth  id="inputemail" variant="outlined" margin="normal"  label="Email"
                  value={updatedUser.email}
                  onChange={(e) => handleInputChange('email', e.target.value)}/>
-               <TextField fullWidth label="Address" id="inputadress" variant="outlined" margin="normal"/>
+               <TextField fullWidth label="Address" id="inputadress" variant="outlined" margin="normal" />
               <TextField fullWidth label="Phone Number" id="inputadress" variant="outlined" margin="normal"/>
-              <Button variant="contained"  type="button" style={{backgroundColor:'#3bc01a'}}
+              <Button variant="contained"  type="button" style={{backgroundColor:'#165ca1'}}
               onClick={handleSaveChanges}>
                 Save changes
               </Button>
@@ -253,7 +265,20 @@ function Profile() {
       </Alert>
     )}
     </div>
+
   );
 }
 
 export default Profile;
+
+
+//                <img
+//         src={imageUrl || "https://www.shutterstock.com/image-vector/man-icon-vector-260nw-1040084344.jpg"}
+//         alt=""
+//                   style={{ borderRadius: '50%',
+//                     maxWidth: '200px',
+//                     maxHeight: '150px',
+//                     cursor: 'pointer',
+//                   }}
+//                   onClick={handleImageClick}
+//                 />

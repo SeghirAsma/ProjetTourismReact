@@ -7,6 +7,10 @@ import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import {  deepPurple } from '@mui/material/colors';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import EditIcon from '@mui/icons-material/Edit';
+import IconButton from '@mui/material/IconButton';
 
 const VideoCardContent = ({username, title, description, videoContenuUrl, idContenu,firstName,lastName}) => {
   const filename = videoContenuUrl.split('/').pop();
@@ -100,10 +104,10 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
     <CardContent>
       {isEditing ? (
         <div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+           <div style={{ display: 'flex', alignItems: 'center' }}>
               <label style={{ marginRight: '10px' ,color:'#033568',fontWeight: 'bold'}}>Title:</label>
               <TextField
-                type="text" id="titleContenu" placeholder="Title" name="title" variant="outlined" margin="normal"
+                type="text" id="titleContenu" placeholder="Title" name="title" variant="standard" margin="normal"
                 autoComplete="title" required fullWidth
                 value={updatedTitle}
                 onChange={(e) => setUpdatedTitle(e.target.value)}
@@ -113,12 +117,16 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
           <div style={{ display: 'flex', alignItems: 'center' ,fontWeight: 'bold'}}>
               <label  style={{ marginRight: '10px' ,color:'#033568'}}>Description:</label>
               <TextField
-                type="text" id="descriptionContenu" placeholder="Description" name="description" variant="outlined"
+                type="text" id="descriptionContenu" placeholder="Description" name="description" variant="standard"
                 margin="normal" autoComplete="description" required fullWidth
                 value={updatedDescription}
                 onChange={(e) => setUpdatedDescription(e.target.value)}
               />
-          </div>
+          </div> 
+ 
+
+
+
 
           <ReactPlayer
             url={videoUrl}
@@ -176,7 +184,7 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
 
         ) : (
           <div>
-            <Button
+            {/* <Button
               variant="contained"
               style={{ textAlign: 'center', marginRight: '10px', backgroundColor: '#4CAF50' }}
               onClick={() => handleApproveClick(idContenu)}
@@ -190,7 +198,26 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
             </Button>
             <Button variant="contained" color="warning" onClick={() => setIsEditing(true)}>
               Update
-            </Button>
+            </Button> */}
+             <IconButton
+    style={{ marginRight: '10px', backgroundColor: '#4CAF50' }}
+    onClick={() => handleApproveClick(idContenu)}
+  >
+    <CheckCircleOutlineIcon />
+  </IconButton>
+  <IconButton
+   
+    style={{ marginRight: '10px' ,backgroundColor: 'red'}}
+    onClick={() => handleUnapproveClick(idContenu)}
+  >
+    <HighlightOffIcon />
+  </IconButton>
+  <IconButton
+    style={{ marginRight: '10px' ,backgroundColor: 'orange'}}
+    onClick={() => setIsEditing(true)}
+  >
+    <EditIcon />
+  </IconButton>
           </div>
         )}
       </div>
