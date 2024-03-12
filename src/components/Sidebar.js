@@ -21,6 +21,9 @@ import UploadVideo from "./UploadVideo";
 import ItemProgram from "./ItemProgram";
 import InfoProgram from "./InfoProgram";
 import EventIcon from '@mui/icons-material/Event';
+
+import '../stylesCss/ItemCss.css';
+
 import InfoIcon from '@mui/icons-material/Info';
 import axios from "axios";
 import { Link,  Route, Routes } from "react-router-dom";
@@ -226,6 +229,9 @@ function Sidebar() {
         </div>
       )}
         </Typography>
+       
+
+
         <Divider />
        <MenuItem onClick={handleLogoutClick} sx={{ marginRight: 1, color: '#165a9d' }} >
          LogOut <ExitToAppIcon sx={{ marginRight: 1, color: '#165a9d' }} />

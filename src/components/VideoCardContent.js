@@ -172,7 +172,8 @@ const VideoCardContent = ({username, title, description, videoContenuUrl, idCont
           <div>
           <Button variant="contained"
           style={{backgroundColor: '#4CAF50'}}
-           onClick={() => handleUpdateClick(idContenu)} >
+           onClick={() => handleUpdateClick(idContenu)}
+           >
             Submit
           </Button>
           <Button variant="contained" 

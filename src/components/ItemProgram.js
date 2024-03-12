@@ -17,7 +17,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-
+import '../stylesCss/ItemCss.css';
 function ItemProgram() {
     const [infoPrograms, setInfoPrograms] = useState([]);
     const [showForm, setShowForm] = useState(false);
@@ -320,9 +320,11 @@ function ItemProgram() {
     <Grid item xs={12} >
       <Card sx={{ width: '100%' }}>
         <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Button variant="contained" style={{ alignSelf: 'flex-end', marginBottom: '16px' }} onClick={toggleForm}>
-   <AddCircleIcon />
-  </Button>
+        <Button variant="contained" style={{ alignSelf: 'flex-end', marginBottom: '16px' }} onClick={toggleForm}
+        className='button'>
+          <AddCircleIcon />
+        </Button>
+ 
           <Paper sx={{width: 345, maxWidth: '100%', marginTop: '12px', maxHeight: '65vh',
               overflow: 'auto', '&::-webkit-scrollbar': { width: '7px',},
               '&::-webkit-scrollbar-thumb': { backgroundColor: '#8497aa', borderRadius: '10px',},
@@ -335,7 +337,7 @@ function ItemProgram() {
                 </ListItemIcon>
                 <ListItemText>
                   <Typography variant="h6" fontWeight="bold" color="primary">
-                    Items List
+                    Elements List
                   </Typography>
                 </ListItemText>
               </MenuItem>
@@ -363,12 +365,12 @@ function ItemProgram() {
     <Container component="main" maxWidth="sm" sx={{ margin: 'auto', marginTop: '13px' }}>
       <Paper elevation={3} style={{ padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}> 
-          <Typography component="h1" variant="h5" style={{ fontWeight: 'bold', marginRight: 'auto' }}>
-            Details Item
+          <Typography component="h1" variant="h5" style={{ fontWeight: 'bold', marginRight: 'auto' , fontSize: '18px'  }}>
+            Details Element
           </Typography>
           {selectedItem && selectedItem.deleted ? (
-            <Typography component="h1" variant="subtitle1" style={{color: 'red', marginLeft: '240px' }}>
-              Item Already Deleted
+            <Typography component="h1" variant="subtitle1" style={{color: 'red', marginLeft: '220px' , fontSize: '15px' }}>
+              Element Already Deleted
             </Typography>
           ) : (
             <IconButton color="error" style={{ marginLeft: '350px', alignItems: 'flex-end' }} onClick={handleArchiveItem}>
@@ -440,12 +442,12 @@ function ItemProgram() {
          </Grid>
 
             <div className="button-container">
-              <Button type="submit" variant="contained" color="success"  className="submit-button" 
-                  disabled={selectedItem && selectedItem.deleted}
+              <Button type="submit" variant="contained" color="success"  className="button" 
+                  disabled={selectedItem && selectedItem.deleted }
                   >
                 Update
               </Button>
-              <Button type="button" variant="contained" color="error" className="cancel-button" onClick={handleCancelFormDetails}>
+              <Button type="button" variant="contained" color="secondary" className="cancel-button" onClick={handleCancelFormDetails}>
                 Cancel
               </Button>
             </div>
@@ -461,7 +463,7 @@ function ItemProgram() {
       <Container component="main" maxWidth="sm" sx={{ margin: 'auto',marginTop: '13px' }} >
         <Paper elevation={3} style={{ padding: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', width:'100%' }}>
           <Typography component="h1" variant="h5" style={{ fontWeight: 'bold'  }}>
-            Add New Item
+            Add New Element
           </Typography>
           <form  style={{ width: '100%', marginTop: 16 }}  >
             <TextField id="referenceItem" label="Reference Item" name="referenceItem" variant="outlined" margin="normal" 
@@ -549,10 +551,11 @@ function ItemProgram() {
               </Grid>
 
             <div className="button-container">
-              <Button type="submit" variant="contained" color="success"  className="submit-button" onClick={handleSubmit}>
+              <Button type="submit" variant="contained" color="success"  className="button" onClick={handleSubmit}
+             >
                 Submit
               </Button>
-              <Button type="button" variant="contained" color="error" className="cancel-button" onClick={handleCancel}>
+              <Button type="button" variant="contained" color="secondary" className="cancel-button" onClick={handleCancel}>
                 Cancel
               </Button>
             </div>

@@ -299,7 +299,8 @@ function InfoProgram({videoContenuUrl}) {
         <Grid item xs={12} >
           <Card sx={{ width: '100%' }}>
             <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Button variant="contained" style={{ alignSelf: 'flex-end', marginBottom: '16px' }} onClick={toggleForm}>
+            <Button variant="contained" style={{ alignSelf: 'flex-end', marginBottom: '16px' }} onClick={toggleForm}
+            className='button'>
                <AddCircleIcon />
             </Button>
               <Paper sx={{width: 345, maxWidth: '100%', marginTop: '12px', maxHeight: '65vh',
@@ -424,12 +425,12 @@ function InfoProgram({videoContenuUrl}) {
               </Select>
             </FormControl>
             <div className="button-container">
-              <Button type="submit" variant="contained" color="success"  className="submit-button" 
+              <Button type="submit" variant="contained" color="success"  className="button" 
                   disabled={selectedProgram && selectedProgram.deleted}
                   >
                 Update
               </Button>
-              <Button type="button" variant="contained" color="error" className="cancel-button" onClick={handleCancelFormDetails}>
+              <Button type="button" variant="contained" color="secondary" className="cancel-button" onClick={handleCancelFormDetails}>
                 Cancel
               </Button>
             </div>
@@ -526,10 +527,10 @@ function InfoProgram({videoContenuUrl}) {
 
 
             <div className="button-container">
-              <Button type="submit" variant="contained" color="success"  className="submit-button" >
+              <Button type="submit" variant="contained" color="success"  className="button" >
                 Submit
               </Button>
-              <Button type="button" variant="contained" color="error" className="cancel-button" onClick={handleCancel}>
+              <Button type="button" variant="contained" color="secondary" className="cancel-button" onClick={handleCancel}>
                 Cancel
               </Button>
             </div>

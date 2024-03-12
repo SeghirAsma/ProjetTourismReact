@@ -12,13 +12,14 @@ import UploadVideo from './components/UploadVideo';
 import ApproveProgram from './components/ApproveProgram';
 import DashboardAdmin from './components/DashboardAdmin';
 import scrollDialog from './components/ScrollDialog';
+import SignUp from './components/SignUp';
 function App() {
   return (
    <Router>
     <Routes>
     <Route path="/about" exact Component={About}></Route>
     <Route path="/verifyaccount/*" exact Component={VerifyAccount}></Route>
-    <Route path="/ProfileSettingsAdmin" exact Component={ProfileSettingsAdmin}></Route>
+    <Route path="/ProfileSettingsAdmin/*" exact Component={ProfileSettingsAdmin}></Route>
     <Route path="/" exact Component={SignInAdmin}></Route>
     <Route path="/UnapprovedProfile/*" exact Component={UnapprovedProfile}></Route>
     <Route path="/VerifyContent/*" exact Component={VerifyContent}></Route>
@@ -28,6 +29,8 @@ function App() {
     <Route path="/ApproveProgram/*" exact Component={ApproveProgram}></Route>
     <Route path="/DashboardAdmin/*" exact Component={DashboardAdmin}></Route>
     <Route path="/scrollDialog/*" exact Component={scrollDialog}></Route>
+    <Route path="/SignUp/*" exact Component={SignUp}></Route>
+
 
 
 

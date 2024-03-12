@@ -17,7 +17,6 @@ import TablePagination from '@mui/material/TablePagination';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Card, CardContent, Typography, Grid } from '@mui/material';
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: { backgroundColor: '#033568', color: theme.palette.common.white,},
   [`&.${tableCellClasses.body}`]: {fontSize: 14, },
