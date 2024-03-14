@@ -382,13 +382,13 @@ function ItemProgram() {
         <form style={{ width: '100%', marginTop: 16 }} onSubmit={handleSubmitDetails}>
           <TextField
             id="referenceItem" label="Reference Item" name="referenceItem" variant="outlined" margin="normal" autoComplete="referenceItem" required fullWidth
-            value={selectedItem.referenceItem} onChange={handleReferenceItemDetailsChange}
+            value={selectedItem.referenceItem} onChange={handleReferenceItemDetailsChange} 
           />
           <TextField id="name" label="Name Item" name="Name" variant="outlined" autoComplete="Name"
               margin="normal"  required fullWidth 
               value={selectedItem.name} onChange={handleNameItemDetailsChange}/>
              <TextField id="type" label="Type" name="type" variant="outlined" margin="normal" autoComplete="type" required fullWidth
-              value={selectedItem.type}   onChange={handleTypeItemDetailsChange}  />
+            value={selectedItem.type}   onChange={handleTypeItemDetailsChange}  />
           <TextField
               id="destination" label="Destination" name="destination" variant="outlined" autoComplete="destination"
               margin="normal"  required fullWidth 
@@ -398,7 +398,7 @@ function ItemProgram() {
             <Grid item xs={6}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['DatePicker']}>
-                  <DatePicker label="Start Date" value={selectedItem.dateDebut} 
+                  <DatePicker label="Start Date" value={selectedItem.dateDebut}
                   onChange={handleDateDebutItemDetailsChange} required fullWidth />
                 </DemoContainer>
               </LocalizationProvider>
@@ -416,7 +416,7 @@ function ItemProgram() {
          <Grid container spacing={2}>
             <Grid item xs={6}>
                <TextField type="number"  id="price" label="Price" name="price" variant="outlined" margin="normal" 
-               autoComplete="price" required fullWidth
+               autoComplete="price" required fullWidth color="secondary" 
               value={selectedItem.price}   
               onChange={handlePriceItemDetailsChange}
               InputProps={{startAdornment: (
@@ -426,12 +426,12 @@ function ItemProgram() {
             </Grid>
             <Grid item xs={6}>
                 <FormControl fullWidth margin="normal" required>
-                    <InputLabel id="required-select-label">Required</InputLabel>
+                    <InputLabel id="required-select-label" >Required</InputLabel>
                     <Select
                       labelId="required-select-label"
                       id="required-select"
                       value={required}
-                      label="Required"
+                      label="Required" color="secondary" 
                       onChange={(e) => setRequired(e.target.value)}
                     >
                       <MenuItem value={true}>Mandatory</MenuItem>

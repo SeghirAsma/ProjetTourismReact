@@ -156,6 +156,7 @@ function Sidebar() {
     const navigate = useNavigate();
 
     const handleLogoutClick = () => {
+       localStorage.clear();  //
         navigate('/');
     };
 

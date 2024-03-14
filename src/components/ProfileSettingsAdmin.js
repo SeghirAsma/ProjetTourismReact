@@ -9,7 +9,6 @@ import EmailIcon from '@mui/icons-material/Email';
 import FaceIcon from '@mui/icons-material/Face';
 import WorkIcon from '@mui/icons-material/Work';
 import '../stylesCss/ProfileCss.css';
-
 function Profile() {
   const [currentUserDetails, setCurrentUserDetails] = useState(null);
   const fileInputRef = useRef(null);
@@ -214,8 +213,7 @@ function Profile() {
                         <ListItem disableGutters>
                           <FaceIcon color="secondary" fontSize="small" />
                           <span style={{ fontWeight: 'bold', color: '#84405a', marginLeft: '5px'}}>
-                            User Name:</span>{currentUserDetails.userEntity.lastName.toUpperCase()}
-                            {currentUserDetails.userEntity.firstName}  
+                            User Name: </span> {currentUserDetails.userEntity.lastName.toUpperCase()} {currentUserDetails.userEntity.firstName}  
                         </ListItem>
                         <ListItem disableGutters>
                           <WorkIcon color="warning" fontSize="small" />
@@ -247,7 +245,7 @@ function Profile() {
                  value={updatedUser.email}
                  onChange={(e) => handleInputChange('email', e.target.value)}/>
                <TextField fullWidth label="Address" id="inputadress" variant="outlined" margin="normal" />
-              <TextField fullWidth label="Phone Number" id="inputadress" variant="outlined" margin="normal"/>
+              <TextField fullWidth label="Phone Number" id="inputadress" variant="outlined" margin="normal" />
               <Button variant="contained"  type="button" style={{backgroundColor:'#165ca1'}} className='button'
               onClick={handleSaveChanges}>
                 Save changes
